@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
+import ru.sicampus.bootcamp2026.screens.LoginScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,29 +21,26 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AndroidBootcamp2026FrontendTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                LoginScreen(
+                    onLoginClick = { email, password ->
+                        println("Превью: Вход с email=$email, password=$password")
+                    }
+                )
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun LoginPreview() {
     AndroidBootcamp2026FrontendTheme {
-        Greeting("Android")
+        LoginScreen(
+            onLoginClick = {email, password ->
+                println("Превью: Вход с email=$email, password=$password")
+            }
+
+        )
     }
 }
