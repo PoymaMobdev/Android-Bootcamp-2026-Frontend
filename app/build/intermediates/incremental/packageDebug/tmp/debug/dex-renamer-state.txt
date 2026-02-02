@@ -1,4 +1,4 @@
-#Mon Feb 02 16:48:57 GMT+03:00 2026
+#Mon Feb 02 17:56:55 GMT+03:00 2026
 base.0=D\:\\Masya\\Desktop\\repoz\\Android-Bootcamp-2026-Frontend\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=D\:\\Masya\\Desktop\\repoz\\Android-Bootcamp-2026-Frontend\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 base.10=D\:\\Masya\\Desktop\\repoz\\Android-Bootcamp-2026-Frontend\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\9\\classes.dex

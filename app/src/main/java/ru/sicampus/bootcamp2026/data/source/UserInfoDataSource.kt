@@ -12,7 +12,7 @@ class UserInfoDataSource {
     val userId = 1
     suspend fun getUser(): Result<ProfileUpdateDTO> = withContext(Dispatchers.IO) {
         runCatching {
-            val result = Network.client.get { "${Network.HOST}/api/users/$userId" }
+            val result = Network.client.get("${Network.HOST}/api/users/$userId")
             if (result.status != HttpStatusCode.OK) {
                 error("Status: ${result.status}")
             }
