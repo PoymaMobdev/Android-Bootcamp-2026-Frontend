@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "ru.sicampus.bootcamp2026.app-mergeDebugResources-41:/values-v30/values-v30.xml",
+            "outputFile": "ru.sicampus.bootcamp2026.app-mergeDebugResources-44:/values-v30/values-v30.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\2e5e12889ef2c204e6898e3bff16381b\\transformed\\material3-release\\res\\values-v30\\values-v30.xml",
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\092bbc33ecb80ff65cb22ba8ab477386\\transformed\\material3-release\\res\\values-v30\\values-v30.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

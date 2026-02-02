@@ -9,6 +9,8 @@ color teal_700
 color white
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable invitation_wave1
+drawable invitation_wave2
 drawable login_wave1
 drawable login_wave2
 drawable login_wave3

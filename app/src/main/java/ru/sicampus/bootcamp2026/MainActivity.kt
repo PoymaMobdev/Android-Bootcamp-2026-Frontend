@@ -1,33 +1,40 @@
 package ru.sicampus.bootcamp2026
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
-import ru.sicampus.bootcamp2026.screens.LoginScreen
+import ru.sicampus.bootcamp2026.ui.theme.screens.Login.LoginScreen
+import androidx.compose.runtime.getValue
+import ru.sicampus.bootcamp2026.ui.theme.screens.Profile.ProfileScreen
 
-class MainActivity : ComponentActivity() {
+class MainActivity() : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AndroidBootcamp2026FrontendTheme {
-                LoginScreen(
-                    onLoginClick = { email, password ->
-                        println("Превью: Вход с email=$email, password=$password")
-                    }
-                )
+            AndroidBootcamp2026FrontendTheme{
+                val viewModel: ViewModel = viewModel()
+
+                val state by viewModel.appState.collectAsState()
+
+                when(val currState = state) {
+                    //is ViewModelState.Login -> LoginScreen()
+                    //is ViewModelState.Invitations->
+                    //is ViewModelState.TimeTable ->
+                    is ViewModelState.Profile -> ProfileScreen()
+                    //is ViewModelState.Loading ->
+                    //is ViewModelState.Error ->
+                    else -> LoginScreen()
+                }
             }
         }
+
     }
 }
 
@@ -37,9 +44,11 @@ class MainActivity : ComponentActivity() {
 fun LoginPreview() {
     AndroidBootcamp2026FrontendTheme {
         LoginScreen(
-            onLoginClick = {email, password ->
+            /* onLoginClick = {email, password ->
                 println("Превью: Вход с email=$email, password=$password")
             }
+
+             */
 
         )
     }

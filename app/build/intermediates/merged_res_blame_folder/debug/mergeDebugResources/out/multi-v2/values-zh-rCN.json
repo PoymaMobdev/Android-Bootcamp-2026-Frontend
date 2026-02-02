@@ -1,27 +1,27 @@
 {
     "logs": [
         {
-            "outputFile": "ru.sicampus.bootcamp2026.app-mergeDebugResources-41:/values-zh-rCN/values-zh-rCN.xml",
+            "outputFile": "ru.sicampus.bootcamp2026.app-mergeDebugResources-44:/values-zh-rCN/values-zh-rCN.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\60bb40e66ddbbd4c86309b8969c7b2ca\\transformed\\foundation\\res\\values-zh-rCN\\values-zh-rCN.xml",
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\55fcaf1afce30c2431ac7363d1699143\\transformed\\core-1.16.0\\res\\values-zh-rCN\\values-zh-rCN.xml",
                     "from": {
-                        "startLines": "2,3,4",
-                        "startColumns": "4,4,4",
-                        "startOffsets": "55,155,236",
-                        "endColumns": "99,80,76",
-                        "endOffsets": "150,231,308"
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,147,248,342,436,529,623,719",
+                        "endColumns": "91,100,93,93,92,93,95,100",
+                        "endOffsets": "142,243,337,431,524,618,714,815"
                     },
                     "to": {
-                        "startLines": "2,88,89",
-                        "startColumns": "4,4,4",
-                        "startOffsets": "105,8078,8159",
-                        "endColumns": "99,80,76",
-                        "endOffsets": "200,8154,8231"
+                        "startLines": "4,5,6,7,8,9,10,84",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "297,389,490,584,678,771,865,7722",
+                        "endColumns": "91,100,93,93,92,93,95,100",
+                        "endOffsets": "384,485,579,673,766,860,956,7818"
                     }
                 },
                 {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\2e5e12889ef2c204e6898e3bff16381b\\transformed\\material3-release\\res\\values-zh-rCN\\values-zh-rCN.xml",
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\092bbc33ecb80ff65cb22ba8ab477386\\transformed\\material3-release\\res\\values-zh-rCN\\values-zh-rCN.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -38,7 +38,24 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\ae98f725211e75a11f7fcdca57792e0f\\transformed\\ui\\res\\values-zh-rCN\\values-zh-rCN.xml",
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\c21906b1055c76e2edb561017afedcaa\\transformed\\foundation\\res\\values-zh-rCN\\values-zh-rCN.xml",
+                    "from": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,155,236",
+                        "endColumns": "99,80,76",
+                        "endOffsets": "150,231,308"
+                    },
+                    "to": {
+                        "startLines": "2,88,89",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "105,8078,8159",
+                        "endColumns": "99,80,76",
+                        "endOffsets": "200,8154,8231"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\f00359711b5bad00ae27fb23e796e46d\\transformed\\ui\\res\\values-zh-rCN\\values-zh-rCN.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -52,23 +69,6 @@
                         "startOffsets": "205,961,1038,1114,1199,1290,1367,1441,7056,7134,7209,7282,7357,7425,7506,7579,7651,7823,7896,7962",
                         "endColumns": "91,76,75,84,90,76,73,76,77,74,72,74,67,80,72,71,70,72,65,115",
                         "endOffsets": "292,1033,1109,1194,1285,1362,1436,1513,7129,7204,7277,7352,7420,7501,7574,7646,7717,7891,7957,8073"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\8ba94a71d7a1e70d80313f19fe2c6dfb\\transformed\\core-1.16.0\\res\\values-zh-rCN\\values-zh-rCN.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,147,248,342,436,529,623,719",
-                        "endColumns": "91,100,93,93,92,93,95,100",
-                        "endOffsets": "142,243,337,431,524,618,714,815"
-                    },
-                    "to": {
-                        "startLines": "4,5,6,7,8,9,10,84",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "297,389,490,584,678,771,865,7722",
-                        "endColumns": "91,100,93,93,92,93,95,100",
-                        "endOffsets": "384,485,579,673,766,860,956,7818"
                     }
                 }
             ]
