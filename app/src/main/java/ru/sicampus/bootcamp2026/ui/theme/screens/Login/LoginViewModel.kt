@@ -1,14 +1,42 @@
 package ru.sicampus.bootcamp2026.ui.theme.screens.Login
 
+import android.widget.Toast
 import androidx.compose.foundation.lazy.grid.LazyGridLayoutInfo
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.sicampus.bootcamp2026.AppViewModel
+import ru.sicampus.bootcamp2026.ViewModelState
+import ru.sicampus.bootcamp2026.data.AuthRepository
+import ru.sicampus.bootcamp2026.data.source.AuthLocalDataSource
+import ru.sicampus.bootcamp2026.data.source.AuthNetworkDataSource
+import ru.sicampus.bootcamp2026.domain.auth.CheckAndSaveAuthUseCase
+import ru.sicampus.bootcamp2026.domain.auth.CheckAuthFormatUseCase
+import ru.sicampus.bootcamp2026.domain.reg.RegistrationUseCase
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel(private val appViewModel: AppViewModel): ViewModel() {
+
+    private val checkAndSaveAuthUseCase by lazy { CheckAndSaveAuthUseCase(
+        AuthRepository(
+            authNetworkDataSource = AuthNetworkDataSource(),
+            authLocalDataSource = AuthLocalDataSource
+        )
+    ) }
+
+    private val registrationUseCase by lazy { RegistrationUseCase(
+        AuthRepository(
+            authNetworkDataSource = AuthNetworkDataSource(),
+            authLocalDataSource = AuthLocalDataSource
+        )
+    ) }
+
+
+
+    private val CheckAuthFormatUseCase by lazy { CheckAuthFormatUseCase() }
 
     private val _uiState: MutableStateFlow<LoginState> = MutableStateFlow(LoginState.Content)
 
@@ -20,7 +48,7 @@ class LoginViewModel: ViewModel() {
 
     fun getData() {
         viewModelScope.launch{
-
+            _uiState.emit(LoginState.Content)
             delay(2000L)
 
         }
@@ -28,17 +56,63 @@ class LoginViewModel: ViewModel() {
 
     fun onRegistrationClick(){
         viewModelScope.launch {
+            _uiState.emit(LoginState.Content)
+        }
+    }
+
+    fun RegistrationClick() {
+        appViewModel.NavigateTo(ViewModelState.Invitations)
+    }
+
+
+
+    fun onLoginClick(){
+        //прописать что если нет временного токена - переключение на контен
+        appViewModel.NavigateTo(ViewModelState.Invitations)
+        //если есть - переключение на список приглашений
+    }
+
+    fun LoginClick() {
+        viewModelScope.launch {
             _uiState.emit(LoginState.Reg)
         }
     }
 
-    fun onLoginClick(){
-        //прописать что если нет временного токена - переключение на контен
-        viewModelScope.launch {
-            _uiState.emit(LoginState.Content)
-        }
 
-        //если есть - переключение на список приглашений
+    fun onIntent(intent: AuthIntent){
+        when(intent){
+            is AuthIntent.Send ->{
+                viewModelScope.launch {
+                    val authCompleted = checkAndSaveAuthUseCase.invoke(
+                        intent.login,
+                        intent.password
+                    )
+                    if (authCompleted) {
+                        onLoginClick()
+                    }else{
+                        _uiState.emit(LoginState.Error("Error"))
+                        }
+                }
+            }
+            is AuthIntent.Reg -> {
+                viewModelScope.launch {
+                    val regCompeted = registrationUseCase.invoke(
+                        intent.fullName,
+                        intent.jobTitle,
+                        intent.email,
+                        intent.password
+                    )
+                    if(regCompeted.isSuccess){
+                        onLoginClick()
+                    }
+                    else{
+                        _uiState.emit(LoginState.Error("Error"))
+                    }
+                }
+            }
+        }
     }
+
+
 
 }

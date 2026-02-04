@@ -19,6 +19,7 @@ private val LightColorScheme = lightColorScheme(
     tertiary = OpDeepBlue,
     surface = Surface,
     background = LightBlue,
+    onSurface = InverseSurface
 )
 
 @Composable

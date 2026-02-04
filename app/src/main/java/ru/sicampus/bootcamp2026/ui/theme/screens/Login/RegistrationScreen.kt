@@ -38,11 +38,11 @@ import androidx.compose.foundation.layout.Box
 @Composable
 fun RegistrationScreen(
     onRegistrationClick: () -> Unit,
-    onLoginClick: () -> Unit,
+    onIntent: (AuthIntent) -> Unit,
 
 ){
-    var SNO by remember { mutableStateOf("") }
-    var JobPost by remember { mutableStateOf("") }
+    var fullName by remember { mutableStateOf("") }
+    var jobTitle by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -113,9 +113,9 @@ fun RegistrationScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    value = SNO,
+                    value = fullName,
                     shape = RoundedCornerShape(6.dp),
-                    onValueChange = { SNO = it },
+                    onValueChange = { fullName = it },
                     label = {
                         Text(
                             "ФИО",
@@ -131,9 +131,9 @@ fun RegistrationScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    value = JobPost,
+                    value = jobTitle,
                     shape = RoundedCornerShape(6.dp),
-                    onValueChange = { JobPost = it },
+                    onValueChange = { jobTitle = it },
                     label = {
                         Text(
                             "Должность",
@@ -184,7 +184,7 @@ fun RegistrationScreen(
                 Spacer(modifier = Modifier.height(39.dp))
 
                 Button(
-                    onClick = { onRegistrationClick() },
+                    onClick = { onIntent(AuthIntent.Reg(fullName, jobTitle, email, password)) },
                     shape = RoundedCornerShape(6.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -194,7 +194,7 @@ fun RegistrationScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text("Уже есть аккаунт?")
-                TextButton(onClick = { onLoginClick() }) {
+                TextButton(onClick = { onRegistrationClick() }) {
                     Text(
                         "Войти",
                         color = DeepBlue,
@@ -207,14 +207,3 @@ fun RegistrationScreen(
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun RegistrationPreview() {
-    _root_ide_package_.ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme {
-        RegistrationScreen (
-            onRegistrationClick = {},
-            onLoginClick = {}
-
-        )
-    }
-}

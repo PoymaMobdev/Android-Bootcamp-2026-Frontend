@@ -32,7 +32,7 @@ fun MeetingListItem(
     dateAndTime: String
 ) {
     Row(
-        modifier = Modifier.padding(12.dp).fillMaxWidth(),
+        modifier = Modifier.padding(horizontal = 12.dp, vertical = 20.dp).fillMaxWidth(),
     ) {
         Column(
             modifier = Modifier.padding(start = 6.dp)
@@ -58,7 +58,6 @@ fun MeetingListItem(
             )
         }
     }
-    HorizontalDivider(thickness = 2.dp, modifier = Modifier.padding(bottom = 4.dp))
 }
 
 @Composable
@@ -70,7 +69,7 @@ fun MeetingList(
     LazyColumn(modifier = modifier) {
         itemsIndexed(meetingNames) { index, meetingName ->
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp, horizontal = 20.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = DeepBlue,
                 ),

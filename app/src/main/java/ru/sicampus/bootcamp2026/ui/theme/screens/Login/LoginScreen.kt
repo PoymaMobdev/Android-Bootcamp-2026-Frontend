@@ -36,23 +36,34 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import ru.sicampus.bootcamp2026.AppViewModel
 
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = viewModel()
+    appViewModel: AppViewModel
 ){
-
+    val viewModel: LoginViewModel = viewModel(
+    factory = object : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return LoginViewModel(appViewModel) as T
+        }
+    }
+    )
     val state by viewModel.uiState.collectAsState()
     when(val currentState = state){
         is LoginState.Error -> LoginError(currentState, onRefresh = {viewModel.getData()})
         is LoginState.Loading -> LoginLoading()
-        is LoginState.Content -> LoginContent(onLoginClick = {viewModel.onLoginClick()} , onRegistrationClick = {viewModel.onRegistrationClick()} )
-        is LoginState.Reg -> RegistrationScreen(onRegistrationClick = {viewModel.onRegistrationClick()}, onLoginClick = {viewModel.onLoginClick()} )
+        is LoginState.Content -> LoginContent(onIntent = { intent -> viewModel.onIntent(intent)}, LoginClick = {viewModel.LoginClick()} )
+        is LoginState.Reg -> RegistrationScreen(onRegistrationClick = {viewModel.onRegistrationClick()}, onIntent = {intent -> viewModel.onIntent(intent)} )
     }
 
 }
+
+
 
 @Composable
 fun LoginLoading() {
@@ -88,8 +99,8 @@ fun LoginError(
 
 @Composable
 private fun LoginContent(
-    onLoginClick: () -> Unit,
-    onRegistrationClick: () -> Unit
+    onIntent: (AuthIntent) -> Unit,
+    LoginClick: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -180,7 +191,7 @@ private fun LoginContent(
                         .fillMaxWidth()
                         .height(56.dp),
                     value = password,
-                    onValueChange = { password = it },
+                    onValueChange = { password = it},
                     shape = RoundedCornerShape(6.dp),
                     label = {
                         Text(
@@ -194,7 +205,7 @@ private fun LoginContent(
                 Spacer(modifier = Modifier.height(39.dp))
 
                 Button(
-                    onClick = { onLoginClick() },
+                    onClick = { onIntent(AuthIntent.Send(email, password = password)) },
                     shape = RoundedCornerShape(6.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -204,7 +215,7 @@ private fun LoginContent(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text("Ещё нет аккаунта?")
-                TextButton(onClick = { onRegistrationClick() }) {
+                TextButton(onClick = { LoginClick() }) {
                     Text(
                         "Зарегистрироваться",
                         color = DeepBlue,
@@ -214,18 +225,14 @@ private fun LoginContent(
             }
         }
     }
+
+
 }
+
 
 @Preview(showBackground = true)
 @Composable
 fun LoginPreview() {
     _root_ide_package_.ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme {
-        LoginScreen(
-            /*onLoginClick = { email, password ->
-                println("Превью: Вход с email=$email, password=$password")
-            }
-
-             */
-        )
     }
 }

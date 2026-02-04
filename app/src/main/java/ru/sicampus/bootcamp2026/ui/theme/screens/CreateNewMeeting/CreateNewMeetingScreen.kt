@@ -6,8 +6,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
@@ -44,6 +46,7 @@ import ru.sicampus.bootcamp2026.ui.theme.Blue
 import ru.sicampus.bootcamp2026.ui.theme.Surface
 import ru.sicampus.bootcamp2026.ui.theme.Typography
 import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.MeetingResponseScreen
+import kotlin.collections.List
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -97,7 +100,7 @@ private fun CreateNewMeetingErrorState(
 private fun CreateNewMeetingContent(
     state: CreateNewMeetingState.Content
 ) { //пока что только архитектура, в дальнейшем перенаправлять и отображать данные из CreateNewMeetingState
-    Scaffold{
+    Scaffold() {
         Column (
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -113,12 +116,14 @@ private fun CreateNewMeetingContent(
                     Column(
                         modifier = Modifier.padding(40.dp).fillMaxWidth(),
                     ) {
+                        Spacer(modifier = Modifier.height(120.dp))
+
                         MeetingFields("Название", "Название встречи")
                         MeetingFields("Описание", "Очень длинное описание предстоящей встречи, которое придумал " +
                                 "сотрудник, чтобы все поняли, для чего она нужна")
-                        MeetingFields("Дата и время", "08.02.2026   18:00-19:00")
                         MeetingFields("Место", "Место встречи")
-                        MeetingFields("Название", "Название встречи")
+                        MeetingFields("Дата", "08.02.2026")
+                        MeetingFields("Время", "18:00-19:00")
                         Text(
                             text = "Список участников",
                             style = Typography.labelSmall,
@@ -150,7 +155,7 @@ private fun CreateNewMeetingContent(
                 }
             }
             Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
+                modifier = Modifier.fillMaxWidth().padding(30.dp),
             ) {
                 Button(
                     onClick = {},
@@ -158,19 +163,7 @@ private fun CreateNewMeetingContent(
                     modifier = Modifier.weight(1f).fillMaxWidth(),
                 ){
                     Text(
-                        "Принять"
-                    )
-                }
-                OutlinedButton(
-                    onClick = {},
-                    shape = RoundedCornerShape(6.dp),
-                    modifier = Modifier.weight(1f).padding(start = 12.dp, end = 40.dp)
-                        .fillMaxWidth(),
-                    border = BorderStroke(2.dp, Blue)
-                ){
-                    Text(
-                        "Отклонить",
-                        color = Blue
+                        "Создать"
                     )
                 }
             }
@@ -187,6 +180,7 @@ fun MeetingFields(
     var text by remember { mutableStateOf(value) }
     if (label=="Описание")
         OutlinedTextField(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
             value = text,
             textStyle = Typography.labelSmall,
             onValueChange = { text = it },
@@ -194,6 +188,7 @@ fun MeetingFields(
         )
     else
         OutlinedTextField(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
             value = text,
             textStyle = Typography.labelSmall,
             onValueChange = { text = it },
@@ -206,6 +201,6 @@ fun MeetingFields(
 @Composable
 fun PreviewCreateNewMeetingScreen() {
     AndroidBootcamp2026FrontendTheme() {
-        MeetingResponseScreen()
+        CreateNewMeetingContent(CreateNewMeetingState.Content("", "", "", "", listOf("Анна", "Борис", "Василий")))
     }
 }
