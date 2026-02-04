@@ -10,5 +10,5 @@ sealed class AuthIntent {
         val jobTitle: String,
         val email:String,
         val password: String
-    )
+    ):AuthIntent()
 }
