@@ -1,7 +1,7 @@
 package ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo
 
 import android.annotation.SuppressLint
-import ru.sicampus.bootcamp2026.ui.theme.components.UserList
+import ru.sicampus.bootcamp2026.ui.theme.components.userList.UserList
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,27 +27,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.R
-import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
+import ru.sicampus.bootcamp2026.domain.entities.UserEntity
 import ru.sicampus.bootcamp2026.ui.theme.Surface
 import ru.sicampus.bootcamp2026.ui.theme.Typography
-import ru.sicampus.bootcamp2026.ui.theme.screens.Login.LoginState
+import ru.sicampus.bootcamp2026.ui.theme.components.userList.UserListViewModel
 
 
 @Composable
 fun MeetingInfoScreen(
-    viewModel: MeetingInfoViewModel = viewModel()
+    appViewModel: AppViewModel,
 ) {
 
+    val viewModel: MeetingInfoViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return MeetingInfoViewModel(appViewModel) as T
+            }
+        }
+    )
     val state by viewModel.uiState.collectAsState()
     when(val currentState = state){
         is MeetingInfoState.Error -> MeetingInfoError(currentState, onRefresh = {viewModel.getData()})
         is MeetingInfoState.Loading -> MeetingInfoLoading()
-        is MeetingInfoState.Content -> MeetingInfoContent()
+        is MeetingInfoState.Content -> MeetingInfoContent(closeInfo = {viewModel.closeInfo()}, users = currentState.users)
     }
 }
 
@@ -87,6 +96,8 @@ private fun MeetingInfoLoading(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun MeetingInfoContent(
+    closeInfo: () -> Unit,
+    users: List<UserEntity>
 ){
     Scaffold{
         Box(
@@ -144,16 +155,9 @@ private fun MeetingInfoContent(
                         modifier = Modifier.paddingFromBaseline(top = 30.dp, bottom = 5.dp)
                     )
                     UserList(
-                        fios = listOf("Иванов Иван Иванович", "Иванов Иван Иванович",
-                            "Иванов Иван Иванович", "Иванов Иван Иванович", "Иванов Иван Иванович"),
-                        positions = listOf(
-                            "Должность сотрудника",
-                            "Должность сотрудника",
-                            "Должность сотрудника",
-                            "Должность сотрудника",
-                            "Должность сотрудника"
-                        ),
-                        isOrganizers = listOf(true, false, false, false, false) // тоже 5 элементов
+                        fios = users.map { it.fullName },
+                        jobTitles = users.map { it.jobTitle },
+                        modifier = Modifier
                     )
                 }
             }
@@ -170,7 +174,7 @@ private fun MeetingInfoContent(
                 modifier = Modifier.fillMaxWidth()
             )
             IconButton(
-                onClick = {},
+                onClick = {closeInfo()},
                 modifier = Modifier.align(Alignment.TopEnd).padding(7.dp)
             ) {
                 Icon(
@@ -180,13 +184,5 @@ private fun MeetingInfoContent(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewMeetingInfoScreen() {
-    AndroidBootcamp2026FrontendTheme() {
-        MeetingInfoScreen()
     }
 }

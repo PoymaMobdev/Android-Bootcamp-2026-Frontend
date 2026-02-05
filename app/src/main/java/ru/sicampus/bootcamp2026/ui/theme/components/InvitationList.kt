@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.ui.theme.components
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,16 +26,30 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.R
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Typography
+import ru.sicampus.bootcamp2026.ui.theme.screens.Invitation.InvitationViewModel
 import kotlin.String
 
 @Composable
 fun InvitationListItem(
     meetingName: String,
-    dateAndTime: String
+    dateAndTime: String,
+    appViewModel: AppViewModel
 ) {
+    val viewModel: InvitationViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return InvitationViewModel(appViewModel) as T
+            }
+        }
+    )
+
     Row(
         modifier = Modifier.padding(12.dp).fillMaxWidth(),
     ) {
@@ -62,7 +77,7 @@ fun InvitationListItem(
         }
         Spacer(modifier = Modifier.weight(1f))
         IconButton(
-            onClick = {  },
+            onClick = { viewModel.toMeetInfo() },
             modifier = Modifier.align(Alignment.CenterVertically),
         ) {
             Icon(
@@ -74,6 +89,7 @@ fun InvitationListItem(
     HorizontalDivider(thickness = 2.dp, modifier = Modifier.padding(bottom = 4.dp))
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Composable
 fun InvitationList(
     meetingNames: List<String>,
@@ -84,7 +100,8 @@ fun InvitationList(
         itemsIndexed(meetingNames) { index, meetingName ->
             InvitationListItem(
                 meetingName = meetingName,
-                dateAndTime = datesAndTimes[index]
+                dateAndTime = datesAndTimes[index],
+                appViewModel = AppViewModel()
             )
         }
     }

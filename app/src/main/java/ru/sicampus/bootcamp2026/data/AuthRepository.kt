@@ -27,9 +27,12 @@ class AuthRepository(
                 email = request.email,
                 password = request.password,
                 fullName = request.fullName,
-                jobTitle = request.jobTitle
+                jobTitle = request.jobTitle,
+                passwordConfirm = request.passwordConfirm,
+                department = request.department
             )
             authNetworkDataSource.registration(dto)
+
         }
     }
 }

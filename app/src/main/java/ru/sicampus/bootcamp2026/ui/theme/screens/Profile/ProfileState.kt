@@ -4,10 +4,10 @@ sealed interface ProfileState {
     data class Error(val reason: String): ProfileState
     data object Loading:ProfileState
     data class NoEdContent(
-        val fio: String,
+        val fullName: String,
         val jobTitle: String,
         val email: String,
-        val photoUrl: String
+        val avatarUrl: String
     ): ProfileState
 
     data class EdContent(

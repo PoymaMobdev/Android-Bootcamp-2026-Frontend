@@ -45,9 +45,11 @@ class ProfileViewModel( private val appViewModel: AppViewModel): ViewModel() {
     fun getData() {
         viewModelScope.launch {
             val dataSource = UserInfoDataSource()
-            val result = dataSource.getUser()
-            val user = result.getOrNull()
-            _uiState.emit(ProfileState.NoEdContent(user?.fullName ?: "Имя не указано", user?.jobTitle ?: "Без должности", user?.email ?: "Почта не указана", user?.avatarUrl ?: "None"))
+            val result = dataSource.getUser(page = 0, size = 10)
+            val pagingData = result.getOrNull()
+            val userDTO = pagingData?.content?.firstOrNull()
+
+            _uiState.emit(ProfileState.NoEdContent(userDTO?.fullName ?: "Имя не указано", userDTO?.jobTitle ?: "Без должности", userDTO?.email ?: "Почта не указана", userDTO?.avatarUrl ?: "None"))
 
             delay(2000L)
 

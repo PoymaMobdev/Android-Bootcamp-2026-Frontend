@@ -6,7 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import ru.sicampus.bootcamp2026.ui.theme.components.UserList
+import ru.sicampus.bootcamp2026.ui.theme.components.userList.UserList
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
@@ -29,7 +29,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.R
+import ru.sicampus.bootcamp2026.domain.entities.UserEntity
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Blue
 import ru.sicampus.bootcamp2026.ui.theme.Surface
@@ -37,7 +42,18 @@ import ru.sicampus.bootcamp2026.ui.theme.Typography
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MeetingResponseScreen() {
+fun MeetingResponseScreen(
+    users: List<UserEntity>,
+    appViewModel: AppViewModel
+
+) {
+    val viewModel: MeetingInfoViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return MeetingInfoViewModel(appViewModel) as T
+            }
+        }
+    )
     Scaffold() {
         Column (
             modifier = Modifier.fillMaxWidth(),
@@ -97,16 +113,8 @@ fun MeetingResponseScreen() {
                             modifier = Modifier.paddingFromBaseline(top = 30.dp, bottom = 5.dp)
                         )
                         UserList(
-                            fios = listOf("Иванов Иван Иванович", "Иванов Иван Иванович",
-                                "Иванов Иван Иванович", "Иванов Иван Иванович", "Иванов Иван Иванович"),
-                            positions = listOf(
-                                "Должность сотрудника",
-                                "Должность сотрудника",
-                                "Должность сотрудника",
-                                "Должность сотрудника",
-                                "Должность сотрудника"
-                            ),
-                            isOrganizers = listOf(true, false, false, false, false) // тоже 5 элементов
+                            fios = users.map { it.fullName },
+                            jobTitles = users.map { it.jobTitle },
                         )
                     }
                 }
@@ -123,7 +131,7 @@ fun MeetingResponseScreen() {
                     modifier = Modifier.fillMaxWidth()
                 )
                 IconButton(
-                    onClick = {},
+                    onClick = {viewModel.closeInfo()},
                     modifier = Modifier.align(Alignment.TopEnd).padding(7.dp)
                 ) {
                     Icon(
@@ -160,13 +168,5 @@ fun MeetingResponseScreen() {
                 }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewMeetingResponceScreen() {
-    AndroidBootcamp2026FrontendTheme() {
-        MeetingResponseScreen()
     }
 }

@@ -9,7 +9,14 @@ class CheckAndSaveAuthUseCase(
     suspend operator fun invoke(
         login: String,
         password: String
-    ): Boolean {
-        return authRepository.checkAndAuth(login, password)
+    ): Result<Boolean> {
+        return runCatching {
+            val isLogin = authRepository.checkAndAuth(login, password)
+            if (!isLogin) {
+                throw Exception("Login or pass incorrect")
+            }
+            isLogin
+        }
     }
 }
+

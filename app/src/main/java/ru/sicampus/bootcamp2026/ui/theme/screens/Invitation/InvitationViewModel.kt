@@ -12,7 +12,7 @@ import ru.sicampus.bootcamp2026.ui.theme.screens.Profile.ProfileState
 
 class InvitationViewModel(private val appViewModel: AppViewModel): ViewModel() {
 
-    private val _uiState: MutableStateFlow<InvitationState> = MutableStateFlow(InvitationState.Content)
+    private val _uiState: MutableStateFlow<InvitationState> = MutableStateFlow(InvitationState.Meetings)
 
     val uiState = _uiState.asStateFlow()
 
@@ -28,9 +28,15 @@ class InvitationViewModel(private val appViewModel: AppViewModel): ViewModel() {
         appViewModel.NavigateTo(ViewModelState.TimeTable)
     }
 
+    fun toMeetInfo() {
+        appViewModel.NavigateTo(ViewModelState.MeetingResponse)
+    }
+
+
+
     fun getData(){
         viewModelScope.launch {
-            _uiState.emit(InvitationState.Content)
+            _uiState.emit(InvitationState.Meetings)
             delay(2000L)
         }
     }

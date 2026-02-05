@@ -84,10 +84,10 @@ class LoginViewModel(private val appViewModel: AppViewModel): ViewModel() {
             is AuthIntent.Send ->{
                 viewModelScope.launch {
                     val authCompleted = checkAndSaveAuthUseCase.invoke(
-                        intent.login,
+                        intent.email,
                         intent.password
                     )
-                    if (authCompleted) {
+                    if (authCompleted.isSuccess) {
                         onLoginClick()
                     }else{
                         _uiState.emit(LoginState.Error("Error"))
@@ -100,7 +100,9 @@ class LoginViewModel(private val appViewModel: AppViewModel): ViewModel() {
                         intent.fullName,
                         intent.jobTitle,
                         intent.email,
-                        intent.password
+                        intent.password,
+                        intent.passwordConfirm,
+                        intent.department
                     )
                     if(regCompeted.isSuccess){
                         onLoginClick()

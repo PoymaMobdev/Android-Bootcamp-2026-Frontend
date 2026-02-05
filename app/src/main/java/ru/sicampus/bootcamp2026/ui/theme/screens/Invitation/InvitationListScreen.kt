@@ -41,6 +41,7 @@ import ru.sicampus.bootcamp2026.ui.theme.Surface
 import ru.sicampus.bootcamp2026.ui.theme.Typography
 import ru.sicampus.bootcamp2026.ui.theme.components.BottomNavBar
 import ru.sicampus.bootcamp2026.ui.theme.components.InvitationList
+import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.MeetingInfoScreen
 
 import ru.sicampus.bootcamp2026.ui.theme.screens.Profile.ProfileEdContent
 import ru.sicampus.bootcamp2026.ui.theme.screens.Profile.ProfileError
@@ -67,8 +68,7 @@ fun InvitationListScreen(
     when(val currentState = state){
         is InvitationState.Error -> InvitationListError(currentState,  onRefresh = {viewModel.getData()})
         is InvitationState.Loading -> InbitationListLoading()
-        is InvitationState.Content -> InvitationListContent(appViewModel, toProfile = {viewModel.toProfile()}, toTimeTable = {viewModel.toTimeTable()})
-
+        is InvitationState.Meetings -> InvitationListContent(appViewModel, toProfile = {viewModel.toProfile()}, toTimeTable = {viewModel.toTimeTable()})
     }
 
 }

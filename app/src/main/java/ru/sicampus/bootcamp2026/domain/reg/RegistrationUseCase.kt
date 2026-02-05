@@ -10,13 +10,17 @@ class RegistrationUseCase(
         fullName: String,
         jobTitle: String,
         email: String,
-        password: String
+        password: String,
+        passwordConfirm: String,
+        department: String
     ): Result<Boolean> {
         val request = RegisterResponse(
             fullName = fullName,
             jobTitle = jobTitle,
             email = email,
-            password = password
+            password = password,
+            passwordConfirm = passwordConfirm,
+            department = department
         )
         return authRepository.register(request)
     }

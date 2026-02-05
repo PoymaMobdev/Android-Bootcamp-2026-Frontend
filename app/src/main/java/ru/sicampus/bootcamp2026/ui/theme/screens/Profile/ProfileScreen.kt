@@ -160,7 +160,7 @@ fun MainProfileViewContent(
                     modifier = Modifier.paddingFromBaseline(top = 270.dp, bottom = 5.dp)
                 )
                 Text(
-                    text = data.fio,
+                    text = data.fullName,
                     style = Typography.bodyLarge
                 )
                 Text(

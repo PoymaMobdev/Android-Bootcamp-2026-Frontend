@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.compose.foundation.layout)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.generativeai)
     testImplementation(libs.junit)
 
     implementation("io.coil-kt:coil:2.6.0")

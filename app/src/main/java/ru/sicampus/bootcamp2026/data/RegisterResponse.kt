@@ -10,5 +10,9 @@ data class RegisterResponse(
     @SerialName("email")
     val email: String,
     @SerialName("password")
-    val password: String
+    val password: String,
+    @SerialName("passwordConfirm")
+    val passwordConfirm: String,
+    @SerialName("department")
+    val department: String
 )

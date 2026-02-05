@@ -4,7 +4,62 @@
             "outputFile": "ru.sicampus.bootcamp2026.app-mergeDebugResources-48:/values/values.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\882cb5dd840e29966a74273a3478efcf\\transformed\\core-1.16.0\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\7a7c6a1f0000c1c40a9dde5b6ef90cb7\\transformed\\navigation-runtime-release\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,10,13",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,108,412,527",
+                        "endLines": "2,9,12,15",
+                        "endColumns": "52,24,24,24",
+                        "endOffsets": "103,407,522,637"
+                    },
+                    "to": {
+                        "startLines": "158,343,545,548",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "7450,19280,26425,26540",
+                        "endLines": "158,349,547,550",
+                        "endColumns": "52,24,24,24",
+                        "endOffsets": "7498,19579,26535,26650"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\188e30fa97af99e4f6f5bf5889fc7390\\transformed\\material3\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,15,16,17,18,19,20,21,22,23,24,25,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,84",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "100,173,261,347,428,512,581,646,729,835,921,1041,1095,1164,1225,1294,1383,1478,1552,1649,1742,1840,1989,2080,2168,2264,2362,2426,2494,2581,2675,2742,2814,2886,2987,3096,3172,3241,3289,3355,3419,3493,3568,3639,3696,3753,3811,3883,3950,4000,4069,4123,4194,4265,4335,4404,4462,4538,4609,4683,4769,4819,4924,5021,5091,5156,5233,5315,6093",
+                        "endLines": "2,3,4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,21,22,23,24,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,83,86",
+                        "endColumns": "72,87,85,80,83,68,64,82,105,85,13,53,68,60,68,88,94,73,96,92,97,13,90,87,95,97,63,67,86,93,66,71,71,100,108,75,68,47,65,63,73,74,70,56,56,57,71,66,49,68,53,70,70,69,68,57,75,70,73,85,49,104,96,69,64,76,81,12,12",
+                        "endOffsets": "168,256,342,423,507,576,641,724,830,916,1036,1090,1159,1220,1289,1378,1473,1547,1644,1737,1835,1984,2075,2163,2259,2357,2421,2489,2576,2670,2737,2809,2881,2982,3091,3167,3236,3284,3350,3414,3488,3563,3634,3691,3748,3806,3878,3945,3995,4064,4118,4189,4260,4330,4399,4457,4533,4604,4678,4764,4814,4919,5016,5086,5151,5228,5310,6088,6241"
+                    },
+                    "to": {
+                        "startLines": "197,217,218,219,220,221,222,223,224,225,226,229,230,231,232,233,234,235,236,237,238,239,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,305,316",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "9513,10914,11002,11088,11169,11253,11322,11387,11470,11576,11662,11782,11836,11905,11966,12035,12124,12219,12293,12390,12483,12581,12730,12821,12909,13005,13103,13167,13235,13322,13416,13483,13555,13627,13728,13837,13913,13982,14030,14096,14160,14234,14309,14380,14437,14494,14552,14624,14691,14741,14810,14864,14935,15006,15076,15145,15203,15279,15350,15424,15510,15560,15665,15762,15832,15897,15974,16971,17749",
+                        "endLines": "197,217,218,219,220,221,222,223,224,225,228,229,230,231,232,233,234,235,236,237,238,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,315,318",
+                        "endColumns": "72,87,85,80,83,68,64,82,105,85,13,53,68,60,68,88,94,73,96,92,97,13,90,87,95,97,63,67,86,93,66,71,71,100,108,75,68,47,65,63,73,74,70,56,56,57,71,66,49,68,53,70,70,69,68,57,75,70,73,85,49,104,96,69,64,76,81,12,12",
+                        "endOffsets": "9581,10997,11083,11164,11248,11317,11382,11465,11571,11657,11777,11831,11900,11961,12030,12119,12214,12288,12385,12478,12576,12725,12816,12904,13000,13098,13162,13230,13317,13411,13478,13550,13622,13723,13832,13908,13977,14025,14091,14155,14229,14304,14375,14432,14489,14547,14619,14686,14736,14805,14859,14930,15001,15071,15140,15198,15274,15345,15419,15505,15555,15660,15757,15827,15892,15969,16051,17744,17897"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\18c47dcd5057a0961da9b31e13f4fde2\\transformed\\transition-1.6.0\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,95,142,185,240,287,332,386,442,494,546,595,656",
+                        "endColumns": "39,46,42,54,46,44,53,55,51,51,48,60,49",
+                        "endOffsets": "90,137,180,235,282,327,381,437,489,541,590,651,701"
+                    },
+                    "to": {
+                        "startLines": "150,151,159,162,163,182,183,184,185,186,187,188,189",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "7067,7107,7503,7655,7710,8730,8775,8829,8885,8937,8989,9038,9099",
+                        "endColumns": "39,46,42,54,46,44,53,55,51,51,48,60,49",
+                        "endOffsets": "7102,7149,7541,7705,7752,8770,8824,8880,8932,8984,9033,9094,9144"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\a156f069c639d2fa0aa76dcd825fd6bf\\transformed\\core-1.16.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,100,101,105,106,107,108,114,124,159,180,213",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -23,62 +78,24 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\ad9038244538c750a1f53731881604a5\\transformed\\appcompat-resources-1.6.1\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,18,24,34,50",
-                        "startColumns": "4,4,4,4,4",
-                        "startOffsets": "55,480,658,942,1353",
-                        "endLines": "17,23,33,49,53",
-                        "endColumns": "24,24,24,24,24",
-                        "endOffsets": "475,653,937,1348,1475"
-                    },
-                    "to": {
-                        "startLines": "355,371,377,601,617",
-                        "startColumns": "4,4,4,4,4",
-                        "startOffsets": "19742,20167,20345,28645,29056",
-                        "endLines": "370,376,386,616,620",
-                        "endColumns": "24,24,24,24,24",
-                        "endOffsets": "20162,20340,20624,29051,29178"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\f87852e594450de23c690bcb2b6520f0\\transformed\\window-1.5.0\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3,9,17,25,31,37,49,55,61,62,63,64,70,71,72,73,79,84,103,111,129",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,114,287,506,725,896,1066,1380,1568,1755,1808,1868,1920,2089,2134,2173,2233,2428,2586,3279,3561,4304",
-                        "endLines": "2,8,16,24,30,36,48,54,60,61,62,63,69,70,71,72,78,83,102,110,128,147",
-                        "endColumns": "58,11,11,11,11,11,11,11,11,52,59,51,11,44,38,59,24,24,24,24,24,24",
-                        "endOffsets": "109,282,501,720,891,1061,1375,1563,1750,1803,1863,1915,2084,2129,2168,2228,2423,2581,3274,3556,4299,5082"
-                    },
-                    "to": {
-                        "startLines": "2,3,9,17,26,32,38,50,56,62,63,64,65,71,72,144,337,350,403,556,564,582",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "150,209,382,601,880,1051,1221,1535,1723,1910,1963,2023,2075,2244,2289,6729,19085,19584,21133,26837,27119,27862",
-                        "endLines": "2,8,16,24,31,37,49,55,61,62,63,64,70,71,72,144,342,354,421,563,581,600",
-                        "endColumns": "58,11,11,11,11,11,11,11,11,52,59,51,11,44,38,59,24,24,24,24,24,24",
-                        "endOffsets": "204,377,596,815,1046,1216,1530,1718,1905,1958,2018,2070,2239,2284,2323,6784,19275,19737,21821,27114,27857,28640"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\cce40019c1e2bdc8030eeedeb7322768\\transformed\\startup-runtime-1.1.1\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\3f3c124b4af154de8e5a2b56fe42a351\\transformed\\core-viewtree-1.0.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
                         "startOffsets": "55",
-                        "endColumns": "82",
-                        "endOffsets": "133"
+                        "endColumns": "42",
+                        "endOffsets": "93"
                     },
                     "to": {
-                        "startLines": "201",
+                        "startLines": "190",
                         "startColumns": "4",
-                        "startOffsets": "9796",
-                        "endColumns": "82",
-                        "endOffsets": "9874"
+                        "startOffsets": "9149",
+                        "endColumns": "42",
+                        "endOffsets": "9187"
                     }
                 },
                 {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\7b2bfdc9efbbb0a3b08eda0c254e5f9e\\transformed\\coil-base-2.6.0\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\32afa1bf9917dba0c3d10c2762c0aeef\\transformed\\coil-base-2.6.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -95,20 +112,107 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\85222beab01038a4c2c1a58ccb44a20e\\transformed\\lifecycle-viewmodel-release\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\08ae85bcb949ea4d3263da1949e051a4\\transformed\\navigation-common-release\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,15,21,27,30",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,694,938,1185,1318",
+                        "endLines": "14,20,26,29,34",
+                        "endColumns": "24,24,24,24,24",
+                        "endOffsets": "689,933,1180,1313,1495"
+                    },
+                    "to": {
+                        "startLines": "517,530,536,542,551",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "25162,25801,26045,26292,26655",
+                        "endLines": "529,535,541,544,555",
+                        "endColumns": "24,24,24,24,24",
+                        "endOffsets": "25796,26040,26287,26420,26832"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\433d5c0a2269201cefb5ab7fe32317a1\\transformed\\savedstate-release\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
                         "startOffsets": "55",
-                        "endColumns": "49",
-                        "endOffsets": "100"
+                        "endColumns": "53",
+                        "endOffsets": "104"
                     },
                     "to": {
-                        "startLines": "195",
+                        "startLines": "194",
                         "startColumns": "4",
-                        "startOffsets": "9410",
-                        "endColumns": "49",
-                        "endOffsets": "9455"
+                        "startOffsets": "9356",
+                        "endColumns": "53",
+                        "endOffsets": "9405"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\e23a4bad7099e200317c21d1c1434943\\transformed\\foundation\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,111,185,241",
+                        "endColumns": "55,73,55,54",
+                        "endOffsets": "106,180,236,291"
+                    },
+                    "to": {
+                        "startLines": "147,199,300,301",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "6898,9656,16748,16804",
+                        "endColumns": "55,73,55,54",
+                        "endOffsets": "6949,9725,16799,16854"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\65c88c6fa2fdac09bc9773e44e21a00c\\transformed\\customview-poolingcontainer-1.0.0\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,109",
+                        "endColumns": "53,66",
+                        "endOffsets": "104,171"
+                    },
+                    "to": {
+                        "startLines": "155,160",
+                        "startColumns": "4,4",
+                        "startOffsets": "7326,7546",
+                        "endColumns": "53,66",
+                        "endOffsets": "7375,7608"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\e9b923bb4047ffd3efc773858478880d\\transformed\\lifecycle-runtime-release\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "42",
+                        "endOffsets": "93"
+                    },
+                    "to": {
+                        "startLines": "191",
+                        "startColumns": "4",
+                        "startOffsets": "9192",
+                        "endColumns": "42",
+                        "endOffsets": "9230"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\534a2dbeed0cd37b693dd85a0784da43\\transformed\\navigationevent\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "60",
+                        "endOffsets": "111"
+                    },
+                    "to": {
+                        "startLines": "192",
+                        "startColumns": "4",
+                        "startOffsets": "9235",
+                        "endColumns": "60",
+                        "endOffsets": "9291"
                     }
                 },
                 {
@@ -129,42 +233,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\da975d4f47692813ec3c977875c484f9\\transformed\\customview-poolingcontainer-1.0.0\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,109",
-                        "endColumns": "53,66",
-                        "endOffsets": "104,171"
-                    },
-                    "to": {
-                        "startLines": "155,160",
-                        "startColumns": "4,4",
-                        "startOffsets": "7326,7546",
-                        "endColumns": "53,66",
-                        "endOffsets": "7375,7608"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\c2f9aa22f26cf24bf69701b3f9bd8926\\transformed\\navigation-runtime-release\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3,10,13",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,108,412,527",
-                        "endLines": "2,9,12,15",
-                        "endColumns": "52,24,24,24",
-                        "endOffsets": "103,407,522,637"
-                    },
-                    "to": {
-                        "startLines": "158,343,545,548",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "7450,19280,26425,26540",
-                        "endLines": "158,349,547,550",
-                        "endColumns": "52,24,24,24",
-                        "endOffsets": "7498,19579,26535,26650"
-                    }
-                },
-                {
                     "source": "D:\\Masya\\Desktop\\repoz\\Android-Bootcamp-2026-Frontend\\app\\src\\main\\res\\values\\colors.xml",
                     "from": {
                         "startLines": "7,2,3,4,5,6,8",
@@ -179,23 +247,6 @@
                         "startOffsets": "2488,2793,2840,2887,2934,2979,3024",
                         "endColumns": "41,46,46,46,44,44,41",
                         "endOffsets": "2525,2835,2882,2929,2974,3019,3061"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\c2080cf791970f364a618c05ab082f04\\transformed\\navigationevent\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "60",
-                        "endOffsets": "111"
-                    },
-                    "to": {
-                        "startLines": "192",
-                        "startColumns": "4",
-                        "startOffsets": "9235",
-                        "endColumns": "60",
-                        "endOffsets": "9291"
                     }
                 },
                 {
@@ -216,7 +267,79 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\56363d713e12f1e640f290531a3c067b\\transformed\\ui-graphics\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\214c83bab0e92af7f21f0bfe09a65fc3\\transformed\\appcompat-resources-1.6.1\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,18,24,34,50",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,480,658,942,1353",
+                        "endLines": "17,23,33,49,53",
+                        "endColumns": "24,24,24,24,24",
+                        "endOffsets": "475,653,937,1348,1475"
+                    },
+                    "to": {
+                        "startLines": "355,371,377,601,617",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "19742,20167,20345,28645,29056",
+                        "endLines": "370,376,386,616,620",
+                        "endColumns": "24,24,24,24,24",
+                        "endOffsets": "20162,20340,20624,29051,29178"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\b79155b8a053d8efba1ff7a79308e999\\transformed\\lifecycle-viewmodel-release\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "49",
+                        "endOffsets": "100"
+                    },
+                    "to": {
+                        "startLines": "195",
+                        "startColumns": "4",
+                        "startOffsets": "9410",
+                        "endColumns": "49",
+                        "endOffsets": "9455"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\fac8996a2c923af8f8c420d89b1fe426\\transformed\\window-1.5.0\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,9,17,25,31,37,49,55,61,62,63,64,70,71,72,73,79,84,103,111,129",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,114,287,506,725,896,1066,1380,1568,1755,1808,1868,1920,2089,2134,2173,2233,2428,2586,3279,3561,4304",
+                        "endLines": "2,8,16,24,30,36,48,54,60,61,62,63,69,70,71,72,78,83,102,110,128,147",
+                        "endColumns": "58,11,11,11,11,11,11,11,11,52,59,51,11,44,38,59,24,24,24,24,24,24",
+                        "endOffsets": "109,282,501,720,891,1061,1375,1563,1750,1803,1863,1915,2084,2129,2168,2228,2423,2581,3274,3556,4299,5082"
+                    },
+                    "to": {
+                        "startLines": "2,3,9,17,26,32,38,50,56,62,63,64,65,71,72,144,337,350,403,556,564,582",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "150,209,382,601,880,1051,1221,1535,1723,1910,1963,2023,2075,2244,2289,6729,19085,19584,21133,26837,27119,27862",
+                        "endLines": "2,8,16,24,31,37,49,55,61,62,63,64,70,71,72,144,342,354,421,563,581,600",
+                        "endColumns": "58,11,11,11,11,11,11,11,11,52,59,51,11,44,38,59,24,24,24,24,24,24",
+                        "endOffsets": "204,377,596,815,1046,1216,1530,1718,1905,1958,2018,2070,2239,2284,2323,6784,19275,19737,21821,27114,27857,28640"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\9ba19db04d0de58181c2ebff20587721\\transformed\\startup-runtime-1.1.1\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "82",
+                        "endOffsets": "133"
+                    },
+                    "to": {
+                        "startLines": "201",
+                        "startColumns": "4",
+                        "startOffsets": "9796",
+                        "endColumns": "82",
+                        "endOffsets": "9874"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\8d26bbe5de329b9c20ab0a280821bf34\\transformed\\ui-graphics\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -233,113 +356,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\3d83a4c775f9bd0acb526002940d559e\\transformed\\savedstate-release\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "53",
-                        "endOffsets": "104"
-                    },
-                    "to": {
-                        "startLines": "194",
-                        "startColumns": "4",
-                        "startOffsets": "9356",
-                        "endColumns": "53",
-                        "endOffsets": "9405"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\94dd96ce1d53a5c2dbe00b285b6a0fa4\\transformed\\navigation-common-release\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,15,21,27,30",
-                        "startColumns": "4,4,4,4,4",
-                        "startOffsets": "55,694,938,1185,1318",
-                        "endLines": "14,20,26,29,34",
-                        "endColumns": "24,24,24,24,24",
-                        "endOffsets": "689,933,1180,1313,1495"
-                    },
-                    "to": {
-                        "startLines": "517,530,536,542,551",
-                        "startColumns": "4,4,4,4,4",
-                        "startOffsets": "25162,25801,26045,26292,26655",
-                        "endLines": "529,535,541,544,555",
-                        "endColumns": "24,24,24,24,24",
-                        "endOffsets": "25796,26040,26287,26420,26832"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\eb5b37b14c7342bd4bd6544bb8444e21\\transformed\\activity-1.12.2\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,97",
-                        "endColumns": "41,59",
-                        "endOffsets": "92,152"
-                    },
-                    "to": {
-                        "startLines": "161,193",
-                        "startColumns": "4,4",
-                        "startOffsets": "7613,9296",
-                        "endColumns": "41,59",
-                        "endOffsets": "7650,9351"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\fa03a3619a44f0d04922e57d99351ed3\\transformed\\core-viewtree-1.0.0\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "42",
-                        "endOffsets": "93"
-                    },
-                    "to": {
-                        "startLines": "190",
-                        "startColumns": "4",
-                        "startOffsets": "9149",
-                        "endColumns": "42",
-                        "endOffsets": "9187"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\afaf6c861ec202f621974e1d8f462bf2\\transformed\\material3\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,15,16,17,18,19,20,21,22,23,24,25,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,84",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "100,173,261,347,428,512,581,646,729,835,921,1041,1095,1164,1225,1294,1383,1478,1552,1649,1742,1840,1989,2080,2168,2264,2362,2426,2494,2581,2675,2742,2814,2886,2987,3096,3172,3241,3289,3355,3419,3493,3568,3639,3696,3753,3811,3883,3950,4000,4069,4123,4194,4265,4335,4404,4462,4538,4609,4683,4769,4819,4924,5021,5091,5156,5233,5315,6093",
-                        "endLines": "2,3,4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,21,22,23,24,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,83,86",
-                        "endColumns": "72,87,85,80,83,68,64,82,105,85,13,53,68,60,68,88,94,73,96,92,97,13,90,87,95,97,63,67,86,93,66,71,71,100,108,75,68,47,65,63,73,74,70,56,56,57,71,66,49,68,53,70,70,69,68,57,75,70,73,85,49,104,96,69,64,76,81,12,12",
-                        "endOffsets": "168,256,342,423,507,576,641,724,830,916,1036,1090,1159,1220,1289,1378,1473,1547,1644,1737,1835,1984,2075,2163,2259,2357,2421,2489,2576,2670,2737,2809,2881,2982,3091,3167,3236,3284,3350,3414,3488,3563,3634,3691,3748,3806,3878,3945,3995,4064,4118,4189,4260,4330,4399,4457,4533,4604,4678,4764,4814,4919,5016,5086,5151,5228,5310,6088,6241"
-                    },
-                    "to": {
-                        "startLines": "197,217,218,219,220,221,222,223,224,225,226,229,230,231,232,233,234,235,236,237,238,239,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,305,316",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "9513,10914,11002,11088,11169,11253,11322,11387,11470,11576,11662,11782,11836,11905,11966,12035,12124,12219,12293,12390,12483,12581,12730,12821,12909,13005,13103,13167,13235,13322,13416,13483,13555,13627,13728,13837,13913,13982,14030,14096,14160,14234,14309,14380,14437,14494,14552,14624,14691,14741,14810,14864,14935,15006,15076,15145,15203,15279,15350,15424,15510,15560,15665,15762,15832,15897,15974,16971,17749",
-                        "endLines": "197,217,218,219,220,221,222,223,224,225,228,229,230,231,232,233,234,235,236,237,238,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,315,318",
-                        "endColumns": "72,87,85,80,83,68,64,82,105,85,13,53,68,60,68,88,94,73,96,92,97,13,90,87,95,97,63,67,86,93,66,71,71,100,108,75,68,47,65,63,73,74,70,56,56,57,71,66,49,68,53,70,70,69,68,57,75,70,73,85,49,104,96,69,64,76,81,12,12",
-                        "endOffsets": "9581,10997,11083,11164,11248,11317,11382,11465,11571,11657,11777,11831,11900,11961,12030,12119,12214,12288,12385,12478,12576,12725,12816,12904,13000,13098,13162,13230,13317,13411,13478,13550,13622,13723,13832,13908,13977,14025,14091,14155,14229,14304,14375,14432,14489,14547,14619,14686,14736,14805,14859,14930,15001,15071,15140,15198,15274,15345,15419,15505,15555,15660,15757,15827,15892,15969,16051,17744,17897"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\c2b0d85b704c233b301d01cfa3020001\\transformed\\transition-1.6.0\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,95,142,185,240,287,332,386,442,494,546,595,656",
-                        "endColumns": "39,46,42,54,46,44,53,55,51,51,48,60,49",
-                        "endOffsets": "90,137,180,235,282,327,381,437,489,541,590,651,701"
-                    },
-                    "to": {
-                        "startLines": "150,151,159,162,163,182,183,184,185,186,187,188,189",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "7067,7107,7503,7655,7710,8730,8775,8829,8885,8937,8989,9038,9099",
-                        "endColumns": "39,46,42,54,46,44,53,55,51,51,48,60,49",
-                        "endOffsets": "7102,7149,7541,7705,7752,8770,8824,8880,8932,8984,9033,9094,9144"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\66c05f8215670a0addef4b8aedfcdeb2\\transformed\\ui\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\aa852a5f4e3a44776b44541a15fd85b9\\transformed\\ui\\res\\values\\values.xml",
                     "from": {
                         "startLines": "34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,64",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -358,37 +375,20 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\f304c3853f7143c0009f909e4defc673\\transformed\\foundation\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\110c1929319fb1b74cb63c1d122fef31\\transformed\\activity-1.12.2\\res\\values\\values.xml",
                     "from": {
-                        "startLines": "2,3,4,5",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,111,185,241",
-                        "endColumns": "55,73,55,54",
-                        "endOffsets": "106,180,236,291"
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,97",
+                        "endColumns": "41,59",
+                        "endOffsets": "92,152"
                     },
                     "to": {
-                        "startLines": "147,199,300,301",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "6898,9656,16748,16804",
-                        "endColumns": "55,73,55,54",
-                        "endOffsets": "6949,9725,16799,16854"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Masya\\.gradle\\caches\\8.11.1\\transforms\\56ff804d644827d23c47378d7512c551\\transformed\\lifecycle-runtime-release\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "42",
-                        "endOffsets": "93"
-                    },
-                    "to": {
-                        "startLines": "191",
-                        "startColumns": "4",
-                        "startOffsets": "9192",
-                        "endColumns": "42",
-                        "endOffsets": "9230"
+                        "startLines": "161,193",
+                        "startColumns": "4,4",
+                        "startOffsets": "7613,9296",
+                        "endColumns": "41,59",
+                        "endOffsets": "7650,9351"
                     }
                 }
             ]

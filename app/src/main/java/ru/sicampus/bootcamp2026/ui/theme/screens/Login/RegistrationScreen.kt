@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.sicampus.bootcamp2026.ui.theme.DeepBlue
 import androidx.compose.foundation.layout.Box
+import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 
 
 @Composable
@@ -45,6 +46,8 @@ fun RegistrationScreen(
     var jobTitle by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordConfirm by remember { mutableStateOf("") }
+    var department by remember { mutableStateOf("") }
 
 
     Box(
@@ -92,7 +95,7 @@ fun RegistrationScreen(
         Surface(
             modifier = Modifier
                 .width(368.dp)
-                .height(575.dp)
+                .height(625.dp)
                 .align(Alignment.Center)
                 .padding(6.dp),
             shape = RoundedCornerShape(24.dp)
@@ -174,17 +177,53 @@ fun RegistrationScreen(
                     shape = RoundedCornerShape(6.dp),
                     label = {
                         Text(
-                            "Password",
+                            "Пароль",
                             fontSize = 14.sp,
                             textAlign = TextAlign.Center
                         )
                     }
                 )
 
-                Spacer(modifier = Modifier.height(39.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    value = passwordConfirm,
+                    onValueChange = { passwordConfirm = it },
+                    shape = RoundedCornerShape(6.dp),
+                    label = {
+                        Text(
+                            "Повторите пароль",
+                            fontSize = 14.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    value = department,
+                    onValueChange = { department = it },
+                    shape = RoundedCornerShape(6.dp),
+                    label = {
+                        Text(
+                            "Повторите пароль",
+                            fontSize = 14.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(15.dp))
 
                 Button(
-                    onClick = { onIntent(AuthIntent.Reg(fullName, jobTitle, email, password)) },
+                    onClick = { onIntent(AuthIntent.Reg(fullName, jobTitle, email, password, passwordConfirm, department)) },
                     shape = RoundedCornerShape(6.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -203,6 +242,17 @@ fun RegistrationScreen(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun RegistrationScreenPreviewTablet() {
+    AndroidBootcamp2026FrontendTheme {
+        RegistrationScreen(
+            onRegistrationClick = {},
+            onIntent = { _ -> }
+        )
     }
 }
 
