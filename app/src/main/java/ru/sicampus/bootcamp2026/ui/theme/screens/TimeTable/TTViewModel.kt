@@ -27,10 +27,9 @@ class TTViewModel(private val appViewModel: AppViewModel): ViewModel() {
         appViewModel.NavigateTo(ViewModelState.Profile)
     }
 
-    fun createNewMeeting(){
+    fun SaveCreate() {
         viewModelScope.launch {
-            _uiState.emit(TTState.Create)
-            delay(2000L)
+            _uiState.emit(TTState.Content)
         }
     }
 

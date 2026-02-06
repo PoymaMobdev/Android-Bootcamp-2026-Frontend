@@ -1,10 +1,8 @@
 package ru.sicampus.bootcamp2026.data.source
 
 import android.annotation.SuppressLint
-import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.header
-import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
@@ -16,13 +14,12 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import ru.sicampus.bootcamp2026.data.dto.MeetinCreateDTO
-import ru.sicampus.bootcamp2026.data.dto.ScheduleEntryDTO
-import java.time.LocalDate
+import ru.sicampus.bootcamp2026.data.dto.InvitationDTO
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class ScheduleNetworkDataSource {
+class InvitationNetworkDataSource {
+
     val _userId = MutableStateFlow<Long?>(null)
     val data = UsersInfoDataSource()
 
@@ -34,26 +31,24 @@ class ScheduleNetworkDataSource {
         }
     }
 
-    @SuppressLint("NewApi")
-    suspend fun findMeetingsTitles(
-    ): List<String> = withContext(Dispatchers.IO) {
-        val token = AuthLocalDataSource.token ?: return@withContext emptyList()
-        val userId = _userId.value ?: 1
-        val startDate = LocalDate.now()
-        val endDate = startDate.plusDays(7)
 
-        val result = Network.client.get("${Network.HOST}/api/schedule") {
+    suspend fun getInvitationsTitles(
+    ): List<String> = withContext(Dispatchers.IO){
+        val token = AuthLocalDataSource.token ?: error("Not authorized")
+
+        val userId = _userId.value ?: 1
+
+        val result = Network.client.get("${Network.HOST}/api/invitations") {
             header(HttpHeaders.Authorization, "Basic $token")
-            header("X-User-Id", userId.toString())
-            parameter("startDate", startDate.toString())
-            parameter("endDate", endDate.toString())
+            header("X-User-Id", userId)
+            header(HttpHeaders.ContentType, "application/json")
         }
 
         return@withContext if (result.status == HttpStatusCode.OK) {
             try {
                 @Serializable
-                data class MeetingResponse(val topic: String, val dateTime: String)
-                val meetings = Json.decodeFromString<List<MeetingResponse>>(result.bodyAsText())
+                data class InvitationResponse(val topic: String, val dateTime: String)
+                val meetings = Json.decodeFromString<List<InvitationResponse>>(result.bodyAsText())
                 meetings.map { it.topic }
             } catch (e: Exception) {
                 emptyList()
@@ -64,27 +59,25 @@ class ScheduleNetworkDataSource {
     }
 
     @SuppressLint("NewApi")
-    suspend fun findMeetingsDT(
-    ): List<String> = withContext(Dispatchers.IO) {
-        val token = AuthLocalDataSource.token ?: return@withContext emptyList()
-        val userId = _userId.value ?: 1
-        val startDate = LocalDate.now()
-        val endDate = startDate.plusDays(7)
+    suspend fun getInvitationsDTs(
+    ): List<String> = withContext(Dispatchers.IO){
+        val token = AuthLocalDataSource.token ?: error("Not authorized")
 
-        val result = Network.client.get("${Network.HOST}/api/schedule") {
+        val userId = _userId.value ?: 1
+
+        val result = Network.client.get("${Network.HOST}/api/invitations") {
             header(HttpHeaders.Authorization, "Basic $token")
-            header("X-User-Id", userId.toString())
-            parameter("startDate", startDate.toString())
-            parameter("endDate", endDate.toString())
+            header("X-User-Id", userId)
+            header(HttpHeaders.ContentType, "application/json")
         }
 
         return@withContext if (result.status == HttpStatusCode.OK) {
             try {
                 @Serializable
-                data class MeetingResponse(val topic: String, val dateTime: String)
-                val meetings = Json.decodeFromString<List<MeetingResponse>>(result.bodyAsText())
-                meetings.map { meeting ->
-                    val startTime = LocalDateTime.parse(meeting.dateTime)
+                data class InvitationResponse(val topic: String, val dateTime: String)
+                val invitations = Json.decodeFromString<List<InvitationResponse>>(result.bodyAsText())
+                invitations.map { invitations ->
+                    val startTime = LocalDateTime.parse(invitations.dateTime)
                     val endTime = startTime.plusHours(1)
 
                     val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
@@ -100,5 +93,4 @@ class ScheduleNetworkDataSource {
             emptyList()
         }
     }
-
 }

@@ -16,6 +16,7 @@ import ru.sicampus.bootcamp2026.domain.GetUsersUseCase
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+
 class MeetingInfoViewModel(private val appViewModel: AppViewModel): ViewModel() {
     private val _uiState: MutableStateFlow<MeetingInfoState> = MutableStateFlow(MeetingInfoState.Loading)
 
@@ -25,30 +26,8 @@ class MeetingInfoViewModel(private val appViewModel: AppViewModel): ViewModel() 
         getData()
     }
 
-    fun closeInfo() {
-        appViewModel.NavigateTo(ViewModelState.Invitations)
-    }
-
-    fun newMeeting(name: String,date: String, time: String, selectedParticipants: List<Long>){
-        viewModelScope.launch {
-            val dataSource = MeetingCreateNetDataSource()
-            val meetingDTO = MeetinCreateDTO(
-                topic = name,
-                dateTime = convertToISO(date, time).toString(),
-                participantIds = selectedParticipants
-            )
-            println("Отправляю DTO: $meetingDTO")
 
 
-            val result = dataSource.createMeeting(meetingDTO)
-
-            if(result){
-                appViewModel.NavigateTo(ViewModelState.Invitations)
-                println("Встреча успешно создана")
-            }
-        }
-
-    }
 
     @SuppressLint("NewApi")
     fun convertToISO(dateStr: String, timeStr: String): String? {

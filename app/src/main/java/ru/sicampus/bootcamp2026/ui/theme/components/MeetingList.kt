@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -66,7 +67,7 @@ fun MeetingList(
     datesAndTimes: List<String>,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn(modifier = modifier.height(548.dp)) {
         itemsIndexed(meetingNames) { index, meetingName ->
             Card(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp, horizontal = 20.dp),
@@ -75,10 +76,14 @@ fun MeetingList(
                 ),
                 shape = RoundedCornerShape(20.dp),
             ) {
-                MeetingListItem(
-                    meetingName = meetingName,
-                    dateAndTime = datesAndTimes[index]
-                )
+                if (meetingNames.isNotEmpty() && datesAndTimes.isNotEmpty()) {
+                    MeetingListItem(
+                        meetingName = meetingName,
+                        dateAndTime = datesAndTimes[index]
+                    )
+                } else {
+                    Text("Нет встреч")
+                }
             }
         }
     }

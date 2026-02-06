@@ -1,5 +1,6 @@
 package ru.sicampus.bootcamp2026.data.source
 
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -12,6 +13,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.sicampus.bootcamp2026.data.dto.MeetinCreateDTO
+import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.MeetingInfoViewModel
 
 class MeetingCreateNetDataSource {
 
@@ -39,7 +41,6 @@ class MeetingCreateNetDataSource {
             header(HttpHeaders.ContentType, "application/json")
             setBody(Json.encodeToString(meeting))
         }
-
 
         result.status == HttpStatusCode.OK
     }

@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.data.dto.MeetinCreateDTO
 import ru.sicampus.bootcamp2026.data.source.MeetingCreateNetDataSource
@@ -31,12 +32,13 @@ import ru.sicampus.bootcamp2026.ui.theme.Surface
 import ru.sicampus.bootcamp2026.ui.theme.fontFamily
 import kotlinx.coroutines.launch
 import ru.sicampus.bootcamp2026.AppViewModel
+import ru.sicampus.bootcamp2026.ViewModelState
 
 
 @Composable
 fun CreateMeetingScreen(
     userPreferences: UserPreferences,
-    appViewModel: AppViewModel
+    appViewModel: AppViewModel,
 ) {
 
 
@@ -47,6 +49,8 @@ fun CreateMeetingScreen(
             }
         }
     )
+    val appState by appViewModel.appState.collectAsStateWithLifecycle()
+
 
     val data = UsersInfoDataSource()
     var name by remember { mutableStateOf("") }
@@ -58,15 +62,14 @@ fun CreateMeetingScreen(
     val scope = rememberCoroutineScope()
     val userid = dataSource._userId.collectAsState().value
 
-    // Загружаем пользователей
+
     LaunchedEffect(Unit) {
-        data.getUsers(0, 6).onSuccess {
+        data.getUsers(0, 10000).onSuccess {
             it.content?.forEach { user ->
                 people.add("${user.id}|${user.fullName} ${user.jobTitle}")
             }
         }
     }
-
 
 
     Column(
@@ -116,7 +119,7 @@ fun CreateMeetingScreen(
                 val parts = person.split("|")
                 val userId = parts[0].toLong()
 
-                    Row(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
@@ -156,13 +159,16 @@ fun CreateMeetingScreen(
         Button(
             onClick = {
                 scope.launch {
-                    dataSource.createMeeting(
+                    val success = dataSource.createMeeting(
                         meeting = MeetinCreateDTO(
                             name,
                             dateTime = viewModel.convertToISO(date, time).toString(),
                             selected
                         )
                     )
+                    if (success) {
+                        appViewModel.NavigateTo(ViewModelState.TimeTable)
+                    }
                 }
             },
             modifier = Modifier

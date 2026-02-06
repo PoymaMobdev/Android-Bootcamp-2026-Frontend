@@ -4,5 +4,4 @@ sealed interface TTState {
     data class Error(val reason: String): TTState
     data object Loading: TTState
     data object Content: TTState
-    data object Create: TTState
 }

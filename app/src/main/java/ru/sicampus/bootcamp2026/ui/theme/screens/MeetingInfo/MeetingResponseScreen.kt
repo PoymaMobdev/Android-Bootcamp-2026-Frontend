@@ -131,7 +131,7 @@ fun MeetingResponseScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
                 IconButton(
-                    onClick = {viewModel.closeInfo()},
+                    onClick = {},
                     modifier = Modifier.align(Alignment.TopEnd).padding(7.dp)
                 ) {
                     Icon(

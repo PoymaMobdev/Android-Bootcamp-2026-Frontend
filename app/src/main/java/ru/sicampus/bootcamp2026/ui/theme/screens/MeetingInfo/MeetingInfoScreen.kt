@@ -56,7 +56,7 @@ fun MeetingInfoScreen(
     when(val currentState = state){
         is MeetingInfoState.Error -> MeetingInfoError(currentState, onRefresh = {viewModel.getData()})
         is MeetingInfoState.Loading -> MeetingInfoLoading()
-        is MeetingInfoState.Content -> MeetingInfoContent(closeInfo = {viewModel.closeInfo()}, users = currentState.users)
+        is MeetingInfoState.Content -> MeetingInfoContent(users = currentState.users)
     }
 }
 
@@ -96,7 +96,6 @@ private fun MeetingInfoLoading(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun MeetingInfoContent(
-    closeInfo: () -> Unit,
     users: List<UserEntity>
 ){
     Scaffold{
@@ -174,7 +173,7 @@ private fun MeetingInfoContent(
                 modifier = Modifier.fillMaxWidth()
             )
             IconButton(
-                onClick = {closeInfo()},
+                onClick = { },
                 modifier = Modifier.align(Alignment.TopEnd).padding(7.dp)
             ) {
                 Icon(

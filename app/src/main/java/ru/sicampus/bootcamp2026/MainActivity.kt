@@ -21,6 +21,8 @@ import androidx.lifecycle.ViewModelProvider
 import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.domain.entities.UserEntity
 import ru.sicampus.bootcamp2026.ui.theme.screens.Invitation.InvitationListScreen
+import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.CreateMeetingScreen
+
 import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.MeetingInfoScreen
 import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.MeetingInfoState
 import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.MeetingInfoViewModel
@@ -68,6 +70,10 @@ class MainActivity() : ComponentActivity() {
                                 Text("Ошибка: ${state.reason}")
                         }
                     }
+                    ViewModelState.CreateMeeting -> CreateMeetingScreen(
+                        userPreferences = userPreferences,
+                        appViewModel = viewModel
+                    )
                     //is ViewModelState.Loading ->
                     //is ViewModelState.Error ->
                     else -> LoginScreen(viewModel, userPreferences)

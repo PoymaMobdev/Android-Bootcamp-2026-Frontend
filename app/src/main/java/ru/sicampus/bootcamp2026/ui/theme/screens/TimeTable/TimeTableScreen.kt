@@ -28,14 +28,44 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.R
+import ru.sicampus.bootcamp2026.ViewModelState
 import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Typography
 import ru.sicampus.bootcamp2026.ui.theme.components.BottomNavBar
 import ru.sicampus.bootcamp2026.ui.theme.components.WeekView
-import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.CreateMeetingScreen
+import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.MeetingInfoViewModel
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 
-import java.util.*
+
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import ru.sicampus.bootcamp2026.data.dto.MeetinCreateDTO
+import ru.sicampus.bootcamp2026.data.source.MeetingCreateNetDataSource
+
+import ru.sicampus.bootcamp2026.data.source.UsersInfoDataSource
+import ru.sicampus.bootcamp2026.ui.theme.Blue
+import ru.sicampus.bootcamp2026.ui.theme.Gray
+import ru.sicampus.bootcamp2026.ui.theme.InverseSurface
+import ru.sicampus.bootcamp2026.ui.theme.LightBlue
+import ru.sicampus.bootcamp2026.ui.theme.OpDeepBlue
+import ru.sicampus.bootcamp2026.ui.theme.Surface
+import ru.sicampus.bootcamp2026.ui.theme.fontFamily
+import kotlinx.coroutines.launch
+
 
 
 
@@ -59,7 +89,6 @@ fun TimetableScreen(
         is TTState.Error -> TimetableError(currState, onRefresh = {viewModel.getData()})
         is TTState.Loading -> TimetableLoading()
         is TTState.Content -> TimeTableContent(appViewModel,toInvitations = {viewModel.toInvitations()}, toProfile = {viewModel.toProfile()} )
-        is TTState.Create -> CreateMeetingScreen(userPreferences, appViewModel)
     }
 }
 
@@ -155,7 +184,7 @@ fun TimeTableContent(
             }
 
             when (selectedIndex) {
-                0 -> WeekView( {viewModel.createNewMeeting()})
+                0 -> WeekView(appViewModel = appViewModel, viewModel = viewModel)
                 //1 -> MonthView()
             }
     }

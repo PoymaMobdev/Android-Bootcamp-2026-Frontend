@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +37,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.R
+import ru.sicampus.bootcamp2026.data.source.InvitationNetworkDataSource
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Surface
 import ru.sicampus.bootcamp2026.ui.theme.Typography
@@ -87,6 +89,14 @@ fun InvitationListContent(
             }
         }
     )
+    val data = InvitationNetworkDataSource()
+    var meetingNames by remember { mutableStateOf<List<String>>(emptyList()) }
+    var times by remember { mutableStateOf<List<String>>(emptyList()) }
+
+    LaunchedEffect(Unit) {
+        meetingNames = data.getInvitationsTitles()
+        times = data.getInvitationsDTs()
+    }
 
     var selectedItem by remember { mutableStateOf("Приглашения") }
 
@@ -135,18 +145,8 @@ fun InvitationListContent(
             ) {
                 Spacer(modifier = Modifier.height(8.dp))
                 InvitationList(
-                    meetingNames = listOf(
-                        "Название встречи",
-                        "Название встречи",
-                        "Название встречи",
-                        "Название встречи"
-                    ),
-                    datesAndTimes = listOf(
-                        "01.02.2026  17:00",
-                        "01.02.2026  18:00",
-                        "01.02.2026  19:00",
-                        "01.02.2026  20:00",
-                    )
+                    meetingNames = meetingNames,
+                    datesAndTimes = times
                 )
             }
 

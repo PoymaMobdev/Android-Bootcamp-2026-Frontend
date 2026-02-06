@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
@@ -24,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -51,34 +54,45 @@ fun InvitationListItem(
     )
 
     Row(
-        modifier = Modifier.padding(12.dp).fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(id = R.drawable.sample_avatar),
             contentDescription = "avatar",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .padding(start = 8.dp, end = 6.dp)
                 .size(39.dp)
                 .clip(CircleShape)
         )
+
+        Spacer(modifier = Modifier.width(12.dp))
+
         Column(
-            modifier = Modifier.padding(start = 6.dp)
+            modifier = Modifier.weight(1f)
         ) {
             Text(
-                meetingName,
-                Modifier.padding(bottom = 5.dp),
-                style = Typography.bodyLarge
+                text = meetingName,
+                style = Typography.bodyLarge,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
-                dateAndTime,
-                style = Typography.labelSmall
+                text = dateAndTime,
+                style = Typography.labelSmall,
+                modifier = Modifier.fillMaxWidth()
             )
         }
-        Spacer(modifier = Modifier.weight(1f))
+
+        Spacer(modifier = Modifier.width(8.dp))
+
         IconButton(
             onClick = { viewModel.toMeetInfo() },
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier.size(48.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
@@ -86,7 +100,6 @@ fun InvitationListItem(
             )
         }
     }
-    HorizontalDivider(thickness = 2.dp, modifier = Modifier.padding(bottom = 4.dp))
 }
 
 @SuppressLint("ViewModelConstructorInComposable")
@@ -104,18 +117,8 @@ fun InvitationList(
                 appViewModel = AppViewModel()
             )
         }
+
     }
 }
 
-@Preview
-@Composable
-fun ProfileScreenPreview(){
-    AndroidBootcamp2026FrontendTheme {
-        val meetingNames : List<String> = listOf("Анна", "Борис", "Василий")
-        val datesAndTimes : List<String> = listOf("123124", "45745754", "465")
-        InvitationList(
-            meetingNames,
-            datesAndTimes
-        )
-    }
-}
+
