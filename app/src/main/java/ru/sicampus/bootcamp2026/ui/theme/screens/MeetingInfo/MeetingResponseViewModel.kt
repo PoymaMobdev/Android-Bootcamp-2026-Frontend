@@ -8,14 +8,14 @@ import kotlinx.coroutines.launch
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.ViewModelState
 import ru.sicampus.bootcamp2026.data.UserRepository
-import ru.sicampus.bootcamp2026.data.source.UserInfoDataSource
+import ru.sicampus.bootcamp2026.data.source.UsersInfoDataSource
 import ru.sicampus.bootcamp2026.domain.GetUsersUseCase
 
 class MeetingResponseViewModel(private val appViewModel: AppViewModel): ViewModel() {
     private val _uiState: MutableStateFlow<MeetingResponseState> = MutableStateFlow(MeetingResponseState.Loading)
 
     val uiState = _uiState.asStateFlow()
-    val getUsersUseCase = GetUsersUseCase(UserRepository(UserInfoDataSource()))
+    val getUsersUseCase = GetUsersUseCase(UserRepository(UsersInfoDataSource()))
     init {
         getData()
     }

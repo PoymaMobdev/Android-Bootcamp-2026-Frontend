@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,7 +40,9 @@ import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun WeekView() {
+fun WeekView(
+    createNewMeeting: () -> Unit
+) {
     val today = LocalDate.now()
 
     val weeks = getWeeksFromToday(today, 52)
@@ -109,7 +112,7 @@ fun WeekView() {
             }
         }
         Button(
-            onClick = {},
+            onClick = { createNewMeeting() },
             modifier = Modifier.fillMaxWidth().padding(15.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Surface,
@@ -150,11 +153,17 @@ fun getWeeksFromToday(today: LocalDate, weeksCount: Int): List<List<LocalDate>> 
     return weeks
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+@SuppressLint("NewApi")
+@Preview(showBackground = true)
 @Composable
-@Preview
-fun WeekCalendarViewPreview() {
-    AndroidBootcamp2026FrontendTheme() {
-        WeekView()
+fun WeekViewPreview() {
+    AndroidBootcamp2026FrontendTheme {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            WeekView(
+                createNewMeeting = {}
+            )
+        }
     }
 }
+
+

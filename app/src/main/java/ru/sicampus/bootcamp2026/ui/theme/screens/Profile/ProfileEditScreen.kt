@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -94,6 +95,18 @@ fun ProfileEditScreen(){
 fun MainProfileContent(
     viewModel: ProfileViewModel = viewModel(),
 ){
+    val uiState by viewModel.uiState.collectAsState()
+
+
+    var fullName by remember { mutableStateOf("") }
+    var jobTitle by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+
+    var currentPassword by remember { mutableStateOf("") }
+    var newPassword by remember { mutableStateOf("") }
+
+    var avatarUrl by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier.padding(32.dp).fillMaxWidth()
     ) {
@@ -107,17 +120,19 @@ fun MainProfileContent(
                 modifier = Modifier.padding(22.dp)
             ){
                 Spacer(modifier = Modifier.height(250.dp))
-                ProfileFields("ФИО", "Иванов Иван иванович" )
+                ProfileFields("ФИО", fullName ){fullName = it}
                 Spacer(modifier = Modifier.height(20.dp))
-                ProfileFields("Должность", "Должность сотрудника")
+                ProfileFields("Должность", jobTitle){jobTitle = it}
                 Spacer(modifier = Modifier.height(20.dp))
-                ProfileFields("Email", "ivan@mail.com")
+                ProfileFields("Email", email){email = it}
                 Spacer(modifier = Modifier.height(20.dp))
-                ProfileFields("Пароль", ". . . . . . . .")
+                ProfileFields("Текущий пароль", currentPassword) { currentPassword = it }
+                Spacer(modifier = Modifier.height(20.dp))
+                ProfileFields("Новый пароль", newPassword) { newPassword = it }
             }
         }
         Button(
-            onClick = { viewModel.saveChanges("","","","") },
+            onClick = { viewModel.saveChanges(fullName,jobTitle,email,"", currentPassword, newPassword) },
             shape = RoundedCornerShape(6.dp),
             modifier = Modifier.fillMaxWidth().padding(top = 30.dp, bottom = 5.dp),
         ){
@@ -126,7 +141,7 @@ fun MainProfileContent(
             )
         }
         OutlinedButton(
-            onClick = { viewModel.cancelChanges("","","", "") },
+            onClick = { viewModel.cancelChanges() },
             shape = RoundedCornerShape(6.dp),
             modifier = Modifier.fillMaxWidth(),
             border = BorderStroke(2.dp, Blue)
@@ -143,13 +158,14 @@ fun MainProfileContent(
 @Composable
 fun ProfileFields (
     label: String,
-    value: String
+    value: String,
+    onValueChange: (String) -> Unit
 ) {
     var text by remember { mutableStateOf(value) }
     OutlinedTextField(
-        value = text,
+        value = value,
         textStyle = Typography.labelSmall,
-        onValueChange = { text = it },
+        onValueChange =  onValueChange,
         maxLines = 1,
         label = { Text(label) }
     )

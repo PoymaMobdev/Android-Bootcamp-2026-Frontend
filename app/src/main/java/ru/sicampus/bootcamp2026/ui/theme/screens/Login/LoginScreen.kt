@@ -40,16 +40,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.AppViewModel
+import ru.sicampus.bootcamp2026.data.source.UserPreferences
 
 
 @Composable
 fun LoginScreen(
-    appViewModel: AppViewModel
+    appViewModel: AppViewModel,
+    userPreferences: UserPreferences
 ){
     val viewModel: LoginViewModel = viewModel(
     factory = object : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return LoginViewModel(appViewModel) as T
+            return LoginViewModel(appViewModel,
+                userPreferences = userPreferences) as T
         }
     }
     )

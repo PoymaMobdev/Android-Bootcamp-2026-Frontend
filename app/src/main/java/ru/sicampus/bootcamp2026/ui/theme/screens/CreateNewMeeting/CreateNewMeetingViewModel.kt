@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 import ru.sicampus.bootcamp2026.data.UserRepository
-import ru.sicampus.bootcamp2026.data.source.UserInfoDataSource
+import ru.sicampus.bootcamp2026.data.source.UsersInfoDataSource
 import ru.sicampus.bootcamp2026.domain.GetUsersUseCase
 
 class CreateNewMeetingViewModel: ViewModel() {
 
     private val getUsersUseCase = GetUsersUseCase(
-        UserRepository = UserRepository(UserInfoDataSource())
+        UserRepository = UserRepository(UsersInfoDataSource())
     )
     private val _uiState: MutableStateFlow<CreateNewMeetingState> = MutableStateFlow(CreateNewMeetingState.Loading)
     val uiState = _uiState.asStateFlow()

@@ -52,6 +52,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.ViewModelState
+import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.ui.theme.components.BottomNavBar
 import ru.sicampus.bootcamp2026.ui.theme.screens.Login.LoginViewModel
 
@@ -59,12 +60,14 @@ import ru.sicampus.bootcamp2026.ui.theme.screens.Login.LoginViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProfileScreen(
-    appViewModel: AppViewModel
+    appViewModel: AppViewModel,
+    userPreferences: UserPreferences
 ){
     val viewModel: ProfileViewModel = viewModel(
         factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return ProfileViewModel(appViewModel) as T
+                return ProfileViewModel(appViewModel,
+                    userPreferences) as T
             }
         }
     )
@@ -79,8 +82,9 @@ fun ProfileScreen(
             appViewModel,
             toInvitations = { viewModel.toInvitations() },
             toTimeTable = { viewModel.toTimeTable() },
-             "Профиль"
-            )
+             "Профиль",
+            userPreferences
+        )
     }
 }
 
@@ -244,12 +248,14 @@ fun ProfileNoEdContent(
     appViewModel: AppViewModel,
     toInvitations: () -> Unit,
     toTimeTable: () -> Unit,
-    selectedItem: String
+    selectedItem: String,
+    userPreferences: UserPreferences
 ){
     val viewModel: ProfileViewModel = viewModel(
         factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return ProfileViewModel(appViewModel) as T
+                return ProfileViewModel(appViewModel,
+                    userPreferences) as T
             }
         }
     )

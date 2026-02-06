@@ -7,7 +7,8 @@ sealed interface ProfileState {
         val fullName: String,
         val jobTitle: String,
         val email: String,
-        val avatarUrl: String
+        val avatarUrl: String,
+
     ): ProfileState
 
     data class EdContent(

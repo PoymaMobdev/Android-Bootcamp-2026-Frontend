@@ -1,6 +1,6 @@
 package ru.sicampus.bootcamp2026.data
 
-import ru.sicampus.bootcamp2026.data.dto.UserRegisterDTO
+import ru.sicampus.bootcamp2026.data.dto.user.UserRegisterDTO
 import ru.sicampus.bootcamp2026.data.source.AuthLocalDataSource
 import ru.sicampus.bootcamp2026.data.source.AuthNetworkDataSource
 
@@ -35,4 +35,5 @@ class AuthRepository(
 
         }
     }
+
 }

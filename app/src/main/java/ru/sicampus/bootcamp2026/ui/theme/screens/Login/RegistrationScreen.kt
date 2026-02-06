@@ -213,7 +213,7 @@ fun RegistrationScreen(
                     shape = RoundedCornerShape(6.dp),
                     label = {
                         Text(
-                            "Повторите пароль",
+                            "Отдел",
                             fontSize = 14.sp,
                             textAlign = TextAlign.Center
                         )
@@ -232,14 +232,6 @@ fun RegistrationScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Text("Уже есть аккаунт?")
-                TextButton(onClick = { onRegistrationClick() }) {
-                    Text(
-                        "Войти",
-                        color = DeepBlue,
-                        textDecoration = TextDecoration.Underline
-                    )
-                }
             }
         }
     }

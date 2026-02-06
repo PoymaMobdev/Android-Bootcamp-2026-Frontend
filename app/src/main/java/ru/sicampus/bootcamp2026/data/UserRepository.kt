@@ -1,16 +1,16 @@
 package ru.sicampus.bootcamp2026.data
 
-import ru.sicampus.bootcamp2026.data.source.UserInfoDataSource
+import ru.sicampus.bootcamp2026.data.source.UsersInfoDataSource
 import ru.sicampus.bootcamp2026.domain.entities.UserEntity
 
 class UserRepository(
-    private val userInfoDataSource: UserInfoDataSource
+    private val userInfoDataSource: UsersInfoDataSource
 ) {
     suspend fun getUsers(
         page: Int,
         size: Int
     ): Result<List<UserEntity>> {
-        return userInfoDataSource.getUser(
+        return userInfoDataSource.getUsers(
             page = page,
             size = size
         ).mapCatching { dto ->

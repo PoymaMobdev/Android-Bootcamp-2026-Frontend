@@ -1,29 +1,65 @@
 package ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.ViewModelState
 import ru.sicampus.bootcamp2026.data.UserRepository
-import ru.sicampus.bootcamp2026.data.source.UserInfoDataSource
+import ru.sicampus.bootcamp2026.data.dto.MeetinCreateDTO
+import ru.sicampus.bootcamp2026.data.source.MeetingCreateNetDataSource
+import ru.sicampus.bootcamp2026.data.source.UsersInfoDataSource
 import ru.sicampus.bootcamp2026.domain.GetUsersUseCase
-import ru.sicampus.bootcamp2026.ui.theme.components.userList.UserListState
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MeetingInfoViewModel(private val appViewModel: AppViewModel): ViewModel() {
     private val _uiState: MutableStateFlow<MeetingInfoState> = MutableStateFlow(MeetingInfoState.Loading)
 
     val uiState = _uiState.asStateFlow()
-    val getUsersUseCase = GetUsersUseCase(UserRepository(UserInfoDataSource()))
+    val getUsersUseCase = GetUsersUseCase(UserRepository(UsersInfoDataSource()))
     init {
         getData()
     }
 
     fun closeInfo() {
         appViewModel.NavigateTo(ViewModelState.Invitations)
+    }
+
+    fun newMeeting(name: String,date: String, time: String, selectedParticipants: List<Long>){
+        viewModelScope.launch {
+            val dataSource = MeetingCreateNetDataSource()
+            val meetingDTO = MeetinCreateDTO(
+                topic = name,
+                dateTime = convertToISO(date, time).toString(),
+                participantIds = selectedParticipants
+            )
+            println("Отправляю DTO: $meetingDTO")
+
+
+            val result = dataSource.createMeeting(meetingDTO)
+
+            if(result){
+                appViewModel.NavigateTo(ViewModelState.Invitations)
+                println("Встреча успешно создана")
+            }
+        }
+
+    }
+
+    @SuppressLint("NewApi")
+    fun convertToISO(dateStr: String, timeStr: String): String? {
+        return try{
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            val localDateTime = LocalDateTime.parse("$dateStr $timeStr", formatter)
+            localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + ".000Z"
+        }
+        catch (e: Exception) {
+            null
+        }
     }
 
 

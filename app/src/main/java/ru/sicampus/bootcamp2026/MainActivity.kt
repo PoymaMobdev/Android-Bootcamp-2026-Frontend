@@ -14,8 +14,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.screens.Login.LoginScreen
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.domain.entities.UserEntity
 import ru.sicampus.bootcamp2026.ui.theme.screens.Invitation.InvitationListScreen
 import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.MeetingInfoScreen
@@ -45,11 +48,13 @@ class MainActivity() : ComponentActivity() {
                 val meetingState by meetingResponseVm.uiState.collectAsState()
 
                 val state by viewModel.appState.collectAsState()
+                val context = LocalContext.current
+                val userPreferences = remember { UserPreferences(context) }
                 when(val currState = state) {
-                    is ViewModelState.Login -> LoginScreen(viewModel)
+                    is ViewModelState.Login -> LoginScreen(viewModel, userPreferences)
                     is ViewModelState.Invitations-> InvitationListScreen(viewModel)
-                    is ViewModelState.TimeTable -> TimetableScreen(viewModel)
-                    is ViewModelState.Profile -> ProfileScreen(viewModel)
+                    is ViewModelState.TimeTable -> TimetableScreen(viewModel, userPreferences)
+                    is ViewModelState.Profile -> ProfileScreen(viewModel, userPreferences)
                     is ViewModelState.MeetingResponse -> {
                         when (val state = meetingState) {
                             is MeetingResponseState.Content ->
@@ -65,7 +70,7 @@ class MainActivity() : ComponentActivity() {
                     }
                     //is ViewModelState.Loading ->
                     //is ViewModelState.Error ->
-                    else -> LoginScreen(viewModel)
+                    else -> LoginScreen(viewModel, userPreferences)
                 }
             }
         }

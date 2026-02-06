@@ -28,10 +28,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.R
+import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Typography
 import ru.sicampus.bootcamp2026.ui.theme.components.BottomNavBar
 import ru.sicampus.bootcamp2026.ui.theme.components.WeekView
+import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.CreateMeetingScreen
 
 import java.util.*
 
@@ -41,7 +43,7 @@ import java.util.*
 @Composable
 fun TimetableScreen(
     appViewModel: AppViewModel,
-
+    userPreferences: UserPreferences
     ) {
     val viewModel: TTViewModel = viewModel(
         factory = object : ViewModelProvider.Factory {
@@ -57,6 +59,7 @@ fun TimetableScreen(
         is TTState.Error -> TimetableError(currState, onRefresh = {viewModel.getData()})
         is TTState.Loading -> TimetableLoading()
         is TTState.Content -> TimeTableContent(appViewModel,toInvitations = {viewModel.toInvitations()}, toProfile = {viewModel.toProfile()} )
+        is TTState.Create -> CreateMeetingScreen(userPreferences, appViewModel)
     }
 }
 
@@ -152,7 +155,7 @@ fun TimeTableContent(
             }
 
             when (selectedIndex) {
-                0 -> WeekView()
+                0 -> WeekView( {viewModel.createNewMeeting()})
                 //1 -> MonthView()
             }
     }
@@ -164,26 +167,6 @@ fun TimeTableContent(
 
 
 
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
-@Composable
-fun TimetableScreenPreview(
-    appViewModel: AppViewModel,
-    toInvitations: () -> Unit,
-    toProfile: () -> Unit
-) {
-    val viewModel: TTViewModel = viewModel(
-        factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return TTViewModel(appViewModel) as T
-            }
-        }
-    )
-    AndroidBootcamp2026FrontendTheme() {
-        TimetableScreen(appViewModel)
-    }
-}
 
 
 

@@ -3,10 +3,12 @@ package ru.sicampus.bootcamp2026.ui.theme.screens.Login
 import android.widget.Toast
 import androidx.compose.foundation.lazy.grid.LazyGridLayoutInfo
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.sicampus.bootcamp2026.AppViewModel
@@ -14,24 +16,33 @@ import ru.sicampus.bootcamp2026.ViewModelState
 import ru.sicampus.bootcamp2026.data.AuthRepository
 import ru.sicampus.bootcamp2026.data.source.AuthLocalDataSource
 import ru.sicampus.bootcamp2026.data.source.AuthNetworkDataSource
+import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.domain.auth.CheckAndSaveAuthUseCase
 import ru.sicampus.bootcamp2026.domain.auth.CheckAuthFormatUseCase
 import ru.sicampus.bootcamp2026.domain.reg.RegistrationUseCase
 
-class LoginViewModel(private val appViewModel: AppViewModel): ViewModel() {
+class LoginViewModel(
+    private val appViewModel: AppViewModel,
+    private val userPreferences: UserPreferences
+): ViewModel() {
 
     private val checkAndSaveAuthUseCase by lazy { CheckAndSaveAuthUseCase(
         AuthRepository(
             authNetworkDataSource = AuthNetworkDataSource(),
             authLocalDataSource = AuthLocalDataSource
-        )
+        ),
+        userPreferences = userPreferences
     ) }
+
+
 
     private val registrationUseCase by lazy { RegistrationUseCase(
         AuthRepository(
             authNetworkDataSource = AuthNetworkDataSource(),
             authLocalDataSource = AuthLocalDataSource
-        )
+        ),
+        userPreferences = userPreferences
+
     ) }
 
 
@@ -60,16 +71,9 @@ class LoginViewModel(private val appViewModel: AppViewModel): ViewModel() {
         }
     }
 
-    fun RegistrationClick() {
-        appViewModel.NavigateTo(ViewModelState.Invitations)
-    }
-
-
 
     fun onLoginClick(){
-        //прописать что если нет временного токена - переключение на контен
         appViewModel.NavigateTo(ViewModelState.Invitations)
-        //если есть - переключение на список приглашений
     }
 
     fun LoginClick() {
@@ -83,6 +87,7 @@ class LoginViewModel(private val appViewModel: AppViewModel): ViewModel() {
         when(intent){
             is AuthIntent.Send ->{
                 viewModelScope.launch {
+                    userPreferences.saveUserEmail(intent.email)
                     val authCompleted = checkAndSaveAuthUseCase.invoke(
                         intent.email,
                         intent.password
@@ -96,6 +101,7 @@ class LoginViewModel(private val appViewModel: AppViewModel): ViewModel() {
             }
             is AuthIntent.Reg -> {
                 viewModelScope.launch {
+                    userPreferences.saveUserEmail(intent.email)
                     val regCompeted = registrationUseCase.invoke(
                         intent.fullName,
                         intent.jobTitle,
@@ -104,8 +110,19 @@ class LoginViewModel(private val appViewModel: AppViewModel): ViewModel() {
                         intent.passwordConfirm,
                         intent.department
                     )
+
                     if(regCompeted.isSuccess){
-                        onLoginClick()
+                        val loginResult = checkAndSaveAuthUseCase.invoke(
+                            intent.email,
+                            intent.password
+                        )
+                        if(loginResult.isSuccess){
+                            delay(1500)
+                            onLoginClick()
+                        }
+                        else{
+                            _uiState.emit(LoginState.Error("Error"))
+                        }
                     }
                     else{
                         _uiState.emit(LoginState.Error("Error"))
