@@ -33,8 +33,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.sicampus.bootcamp2026.ui.theme.DeepBlue
 import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.OutlinedButton
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
-
 
 @Composable
 fun RegistrationScreen(
@@ -130,22 +132,78 @@ fun RegistrationScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    value = jobTitle,
-                    shape = RoundedCornerShape(6.dp),
-                    onValueChange = { jobTitle = it },
-                    label = {
+
+
+                var showJobDropdown by remember { mutableStateOf(false) }
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OutlinedButton(
+                        onClick = { showJobDropdown = true },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(6.dp)
+                    ) {
                         Text(
-                            "Должность",
-                            fontSize = 14.sp,
-                            textAlign = TextAlign.Center
+                            if (jobTitle.isNotEmpty()) jobTitle else "Должность",
+                            fontSize = 14.sp
                         )
                     }
-                )
 
+                    DropdownMenu(
+                        expanded = showJobDropdown,
+                        onDismissRequest = { showJobDropdown = false },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        jobTitle.forEach { option ->
+                            DropdownMenuItem(
+                                text = { Text(option.toString()) },
+                                onClick = {
+                                    jobTitle = option.toString()
+                                    showJobDropdown = false
+                                }
+                            )
+                        }
+                    }
+                }
+
+                var showDeptDropdown by remember { mutableStateOf(false) }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OutlinedButton(
+                        onClick = { showDeptDropdown = true },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(6.dp)
+                    ) {
+                        Text(
+                            if (department.isNotEmpty()) department else "Отдел",
+                            fontSize = 14.sp
+                        )
+                    }
+
+                    DropdownMenu(
+                        expanded = showDeptDropdown,
+                        onDismissRequest = { showDeptDropdown = false },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        department.forEach { option ->
+                            DropdownMenuItem(
+                                text = { Text(option.toString()) },
+                                onClick = {
+                                    department = option.toString()
+                                    showDeptDropdown = false
+                                }
+                            )
+                        }
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(20.dp))
 
@@ -203,24 +261,6 @@ fun RegistrationScreen(
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
-
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    value = department,
-                    onValueChange = { department = it },
-                    shape = RoundedCornerShape(6.dp),
-                    label = {
-                        Text(
-                            "Отдел",
-                            fontSize = 14.sp,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(15.dp))
 
                 Button(
                     onClick = { onIntent(AuthIntent.Reg(fullName, jobTitle, email, password, passwordConfirm, department)) },

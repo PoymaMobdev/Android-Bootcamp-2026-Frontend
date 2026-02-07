@@ -6,7 +6,7 @@ data class RegisterResponse(
     @SerialName("fullName")
     val fullName: String,
     @SerialName("jobTitle")
-    val jobTitle: String,
+    val jobTitle: List<String>,
     @SerialName("email")
     val email: String,
     @SerialName("password")
@@ -14,5 +14,5 @@ data class RegisterResponse(
     @SerialName("passwordConfirm")
     val passwordConfirm: String,
     @SerialName("department")
-    val department: String
+    val department: List<String>
 )

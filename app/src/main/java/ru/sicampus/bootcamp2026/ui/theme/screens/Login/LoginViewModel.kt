@@ -104,11 +104,11 @@ class LoginViewModel(
                     userPreferences.saveUserEmail(intent.email)
                     val regCompeted = registrationUseCase.invoke(
                         intent.fullName,
-                        intent.jobTitle,
+                        listOf(intent.jobTitle),
                         intent.email,
                         intent.password,
                         intent.passwordConfirm,
-                        intent.department
+                        listOf(intent.department)
                     )
 
                     if(regCompeted.isSuccess){
@@ -131,7 +131,5 @@ class LoginViewModel(
             }
         }
     }
-
-
 
 }

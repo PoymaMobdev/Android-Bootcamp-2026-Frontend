@@ -10,11 +10,11 @@ class RegistrationUseCase(
 ) {
     suspend operator fun invoke(
         fullName: String,
-        jobTitle: String,
+        jobTitle: List<String>,
         email: String,
         password: String,
         passwordConfirm: String,
-        department: String
+        department: List<String>
     ): Result<Boolean> {
 
         userPreferences.saveUserEmail(email)
