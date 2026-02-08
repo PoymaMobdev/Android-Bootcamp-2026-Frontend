@@ -2,8 +2,9 @@ package ru.sicampus.bootcamp2026.data.dto
 
 import android.annotation.SuppressLint
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
-
+@Serializable
 data class InvitationDTO(
     @SerialName("invitationId")
     val invitationId: String,

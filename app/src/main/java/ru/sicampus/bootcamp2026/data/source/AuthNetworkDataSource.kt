@@ -37,9 +37,7 @@ class AuthNetworkDataSource {
 
     suspend fun registration(user: UserRegisterDTO): Boolean = withContext(Dispatchers.IO) {
         runCatching {
-            val token = AuthLocalDataSource.token ?: error("Not authorized")
             val result = Network.client.post("${Network.HOST}/api/users/register") {
-                header(HttpHeaders.Authorization, "Basic $token")
                 contentType(ContentType.Application.Json)
                 setBody(user)
             }

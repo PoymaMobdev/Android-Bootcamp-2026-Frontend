@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.DeepBlue
+import ru.sicampus.bootcamp2026.ui.theme.Gray
 import ru.sicampus.bootcamp2026.ui.theme.Typography
 
 @Composable
@@ -72,7 +73,7 @@ fun MeetingList(
             Card(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp, horizontal = 20.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = DeepBlue,
+                    containerColor = Gray,
                 ),
                 shape = RoundedCornerShape(20.dp),
             ) {
@@ -81,6 +82,7 @@ fun MeetingList(
                         meetingName = meetingName,
                         dateAndTime = datesAndTimes[index]
                     )
+                    Text("Вы создали встречу", modifier = Modifier.padding(16.dp))
                 } else {
                     Text("Нет встреч")
                 }

@@ -37,7 +37,6 @@ import ru.sicampus.bootcamp2026.R
 import ru.sicampus.bootcamp2026.domain.entities.UserEntity
 import ru.sicampus.bootcamp2026.ui.theme.Surface
 import ru.sicampus.bootcamp2026.ui.theme.Typography
-import ru.sicampus.bootcamp2026.ui.theme.components.userList.UserListViewModel
 
 
 @Composable
@@ -121,31 +120,12 @@ private fun MeetingInfoContent(
                         style = Typography.bodyLarge
                     )
                     Text(
-                        text = "Описание",
-                        style = Typography.labelSmall,
-                        modifier = Modifier.paddingFromBaseline(top = 30.dp, bottom = 5.dp)
-                    )
-                    Text(
-                        text = "Очень длинное описание предстоящей встречи, которое придумал " +
-                                "сотрудник, чтобы все поняли, для чего она нужна",
-                        style = Typography.bodyLarge
-                    )
-                    Text(
                         text = "Дата и время",
                         style = Typography.labelSmall,
                         modifier = Modifier.paddingFromBaseline(top = 30.dp, bottom = 5.dp)
                     )
                     Text(
                         text = "08.02.2026   18:00-19:00",
-                        style = Typography.bodyLarge
-                    )
-                    Text(
-                        text = "Место",
-                        style = Typography.labelSmall,
-                        modifier = Modifier.paddingFromBaseline(top = 30.dp, bottom = 5.dp)
-                    )
-                    Text(
-                        text = "Место встречи",
                         style = Typography.bodyLarge
                     )
                     Text(

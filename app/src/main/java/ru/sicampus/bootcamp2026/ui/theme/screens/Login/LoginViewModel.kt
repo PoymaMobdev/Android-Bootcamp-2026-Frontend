@@ -1,14 +1,9 @@
 package ru.sicampus.bootcamp2026.ui.theme.screens.Login
 
-import android.widget.Toast
-import androidx.compose.foundation.lazy.grid.LazyGridLayoutInfo
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.sicampus.bootcamp2026.AppViewModel
@@ -47,7 +42,7 @@ class LoginViewModel(
 
 
 
-    private val CheckAuthFormatUseCase by lazy { CheckAuthFormatUseCase() }
+    // private val CheckAuthFormatUseCase by lazy { CheckAuthFormatUseCase() }
 
     private val _uiState: MutableStateFlow<LoginState> = MutableStateFlow(LoginState.Content)
 
@@ -104,11 +99,11 @@ class LoginViewModel(
                     userPreferences.saveUserEmail(intent.email)
                     val regCompeted = registrationUseCase.invoke(
                         intent.fullName,
-                        listOf(intent.jobTitle),
+                        intent.jobTitle,
                         intent.email,
                         intent.password,
                         intent.passwordConfirm,
-                        listOf(intent.department)
+                        intent.department
                     )
 
                     if(regCompeted.isSuccess){

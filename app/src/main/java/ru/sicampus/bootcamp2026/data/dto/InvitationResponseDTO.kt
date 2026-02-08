@@ -5,6 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class InvitationResponseDTO(
-    @SerialName("status")
-    val status: String
+    @SerialName("invitationId")
+    val invitationId: String,
+    @SerialName("topic")
+    val topic: String,
+    @SerialName("dateTime")
+    val dateTime: String,
+    @SerialName("organizerName")
+    val organizerName: String
 )

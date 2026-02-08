@@ -21,24 +21,34 @@ import ru.sicampus.bootcamp2026.data.dto.ScheduleEntryDTO
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.properties.Delegates
+
 
 class ScheduleNetworkDataSource {
-    val _userId = MutableStateFlow<Long?>(null)
+    private val _userId: MutableStateFlow<Long?> = MutableStateFlow(null)
     val data = UsersInfoDataSource()
 
-    suspend fun loadUserIDByEmail(email: String?) {
-        data.getUserByEmail(email).onSuccess { user ->
-            _userId.value = user.id.toLong()
-        }.onFailure {
-            _userId.value = 1L
-        }
+    suspend fun loadAndReturnUserID(email: String?): Long {
+        return data.getUserByEmail(email)
+            .fold(
+                onSuccess = { user ->
+                    _userId.value = user.id.toLong()
+                    user.id.toLong()
+                },
+                onFailure = {
+                    _userId.value = 1L
+                    1L
+                }
+            )
     }
+
 
     @SuppressLint("NewApi")
     suspend fun findMeetingsTitles(
+        usersPreferences: UserPreferences
     ): List<String> = withContext(Dispatchers.IO) {
         val token = AuthLocalDataSource.token ?: return@withContext emptyList()
-        val userId = _userId.value ?: 1
+        val userId = loadAndReturnUserID(usersPreferences.getUserEmail())
         val startDate = LocalDate.now()
         val endDate = startDate.plusDays(7)
 
@@ -65,9 +75,10 @@ class ScheduleNetworkDataSource {
 
     @SuppressLint("NewApi")
     suspend fun findMeetingsDT(
+        usersPreferences: UserPreferences
     ): List<String> = withContext(Dispatchers.IO) {
         val token = AuthLocalDataSource.token ?: return@withContext emptyList()
-        val userId = _userId.value ?: 1
+        val userId = loadAndReturnUserID(usersPreferences.getUserEmail())
         val startDate = LocalDate.now()
         val endDate = startDate.plusDays(7)
 

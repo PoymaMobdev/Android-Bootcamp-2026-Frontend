@@ -9,37 +9,49 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 import ru.sicampus.bootcamp2026.data.dto.ProfileUpdateDTO
-import ru.sicampus.bootcamp2026.data.source.AuthLocalDataSource.setToken
 
 class ProfileNetworkDataSource {
-    val _userId = MutableStateFlow<Int?>(null)
+    private val _userId: MutableStateFlow<Long?> = MutableStateFlow(null)
     val data = UsersInfoDataSource()
 
-    suspend fun loadUserIDByEmail(email: String) {
-        data.getUserByEmail(email).onSuccess { user ->
-            _userId.value = user.id
-        }
+    suspend fun loadAndReturnUserID(email: String?): Long {
+        return data.getUserByEmail(email)
+            .fold(
+                onSuccess = { user ->
+                    _userId.value = user.id.toLong()
+                    user.id.toLong()
+                },
+                onFailure = {
+                    _userId.value = 1L
+                    1L
+                }
+            )
     }
 
 
     suspend fun updateProfile(
         _userId: Int?,
         updateData: ProfileUpdateDTO,
-        currentPassword: String,
-        currentEmail: String?
+        userPreferences: UserPreferences,
+        currentPassword: String
     ): Boolean = withContext(Dispatchers.IO){
         runCatching {
-            val token = setToken(currentEmail, currentPassword)
+            val token = AuthLocalDataSource.token?: error("Not authorized")
 
             val result = Network.client.put("${Network.HOST}/api/users/$_userId"){
                 header(HttpHeaders.Authorization, "Basic $token")
                 header(HttpHeaders.ContentType, "application/json")
                 setBody(updateData)
             }
-            if (result.status == HttpStatusCode.OK && updateData.email != null) {
-                AuthLocalDataSource.setToken(updateData.email, currentPassword)
+            if (result.status == HttpStatusCode.OK) {
+                val newEmail = updateData.email ?: userPreferences.getUserEmail()
+
+                if (newEmail != null) {
+                    AuthLocalDataSource.setToken(newEmail, currentPassword)
+                }
+                return@withContext true
             }
-            result.status == HttpStatusCode.OK
+            false
         }.getOrElse { false }
     }
 

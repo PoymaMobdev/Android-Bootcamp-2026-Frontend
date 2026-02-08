@@ -9,9 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -37,26 +38,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.R
+import ru.sicampus.bootcamp2026.data.dto.InvitationResponseDTO
 import ru.sicampus.bootcamp2026.data.source.InvitationNetworkDataSource
+import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Surface
 import ru.sicampus.bootcamp2026.ui.theme.Typography
 import ru.sicampus.bootcamp2026.ui.theme.components.BottomNavBar
 import ru.sicampus.bootcamp2026.ui.theme.components.InvitationList
-import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.MeetingInfoScreen
 
-import ru.sicampus.bootcamp2026.ui.theme.screens.Profile.ProfileEdContent
-import ru.sicampus.bootcamp2026.ui.theme.screens.Profile.ProfileError
-import ru.sicampus.bootcamp2026.ui.theme.screens.Profile.ProfileLoading
-import ru.sicampus.bootcamp2026.ui.theme.screens.Profile.ProfileNoEdContent
-import ru.sicampus.bootcamp2026.ui.theme.screens.Profile.ProfileState
-import ru.sicampus.bootcamp2026.ui.theme.screens.Profile.ProfileViewModel
-import java.nio.file.WatchEvent
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun InvitationListScreen(
-    appViewModel: AppViewModel
+    appViewModel: AppViewModel,
+    usersPreferences: UserPreferences
 ) {
     val viewModel: InvitationViewModel = viewModel(
         factory = object : ViewModelProvider.Factory {
@@ -70,7 +66,7 @@ fun InvitationListScreen(
     when(val currentState = state){
         is InvitationState.Error -> InvitationListError(currentState,  onRefresh = {viewModel.getData()})
         is InvitationState.Loading -> InbitationListLoading()
-        is InvitationState.Meetings -> InvitationListContent(appViewModel, toProfile = {viewModel.toProfile()}, toTimeTable = {viewModel.toTimeTable()})
+        is InvitationState.Meetings -> InvitationListContent(appViewModel, toProfile = {viewModel.toProfile()}, toTimeTable = {viewModel.toTimeTable()},usersPreferences, viewModel)
     }
 
 }
@@ -80,22 +76,37 @@ fun InvitationListScreen(
 fun InvitationListContent(
     appViewModel: AppViewModel,
     toProfile: () -> Unit,
-    toTimeTable: () -> Unit
+    toTimeTable: () -> Unit,
+    usersPreferences: UserPreferences,
+    viewModel: InvitationViewModel
 ) {
-    val viewModel: InvitationViewModel = viewModel(
-        factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return InvitationViewModel(appViewModel) as T
-            }
-        }
-    )
     val data = InvitationNetworkDataSource()
+
     var meetingNames by remember { mutableStateOf<List<String>>(emptyList()) }
     var times by remember { mutableStateOf<List<String>>(emptyList()) }
+    var invitationsIds by remember { mutableStateOf<List<String>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
+    var fullInvitations by remember { mutableStateOf<List<InvitationResponseDTO>>(emptyList()) }
+    var showDialog by remember { mutableStateOf(false) }
+    var selectedInvitation by remember { mutableStateOf<InvitationResponseDTO?>(null) }
 
     LaunchedEffect(Unit) {
-        meetingNames = data.getInvitationsTitles()
-        times = data.getInvitationsDTs()
+        isLoading = true
+        try {
+            fullInvitations = data.getInvitationsFull(usersPreferences)
+            meetingNames = fullInvitations.map { it.topic }
+            times = fullInvitations.map { it.dateTime }
+            invitationsIds = fullInvitations.map { it.invitationId }
+
+            if (fullInvitations.isNotEmpty()) {
+                selectedInvitation = fullInvitations[0]
+                showDialog = true
+            }
+        } catch (e: Exception) {
+            fullInvitations = emptyList()
+        } finally {
+            isLoading = false
+        }
     }
 
     var selectedItem by remember { mutableStateOf("Приглашения") }
@@ -138,18 +149,33 @@ fun InvitationListContent(
             }
             Spacer(modifier = Modifier.height(30.dp))
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .widthIn(min = 412.dp)
+                    .heightIn(min = 445.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = Surface,
                 ),
             ) {
                 Spacer(modifier = Modifier.height(8.dp))
-                InvitationList(
-                    meetingNames = meetingNames,
-                    datesAndTimes = times
-                )
-            }
 
+                if (isLoading) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                } else {
+                    InvitationList(
+                        meetingNames = meetingNames,
+                        datesAndTimes = times,
+                        modifier = Modifier,
+                        appViewModel = appViewModel,
+                        invitationsIds = invitationsIds,
+                        usersPreferences
+                    )
+                }
+            }
         }
     }
 }
@@ -191,9 +217,10 @@ fun InbitationListLoading() {
 @Preview
 @Composable
 fun InvitationListScreenPreview(
-    appViewModel: AppViewModel
+    appViewModel: AppViewModel,
+    usersPreferences: UserPreferences
 ) {
     AndroidBootcamp2026FrontendTheme() {
-        InvitationListScreen(appViewModel)
+        InvitationListScreen(appViewModel, usersPreferences)
     }
 }

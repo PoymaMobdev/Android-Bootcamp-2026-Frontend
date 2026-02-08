@@ -7,6 +7,5 @@ sealed interface ViewModelState {
     data object Invitations: ViewModelState
     data object TimeTable: ViewModelState
     data object Profile: ViewModelState
-    data object MeetingResponse: ViewModelState
     data object CreateMeeting:ViewModelState
 }

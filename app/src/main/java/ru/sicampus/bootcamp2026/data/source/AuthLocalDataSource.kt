@@ -8,7 +8,7 @@ object AuthLocalDataSource {
 
     private var _cacheToken: String? = null
 
-    fun setToken(login: String?, password: String): String?{
+    fun setToken(login: String?, password: String?): String?{
         val credentials = "$login:$password"
         val base64String = Base64.encode(credentials.toByteArray())
         _cacheToken = base64String

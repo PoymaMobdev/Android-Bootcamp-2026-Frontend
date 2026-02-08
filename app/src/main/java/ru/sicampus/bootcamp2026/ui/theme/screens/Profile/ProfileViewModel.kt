@@ -48,7 +48,7 @@ class ProfileViewModel(
         }
     }
 
-    fun saveChanges(fullName: String, jobTitle: String, email: String,  avatarUrl: String, currentPassword: String, newPassword: String){
+    fun saveChanges(fullName: String, jobTitle: String, email: String,  avatarUrl: String, currentPassword: String){
         viewModelScope.launch {
             _uiState.value = ProfileState.Loading
 
@@ -64,6 +64,7 @@ class ProfileViewModel(
                 jobTitle = jobTitle,
                 email = email,
                 avatarUrl = avatarUrl,
+                currentPassword = currentPassword
 
             )
 
@@ -72,8 +73,8 @@ class ProfileViewModel(
             val success = profileDataSource.updateProfile(
                 _userId = userDTO?.id,
                 updateData = updateData,
-                currentPassword = currentPassword,
-                currentEmail = currentEmail
+                userPreferences,
+                currentPassword
             )
 
             if (success) {

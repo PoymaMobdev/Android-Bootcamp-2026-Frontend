@@ -1,22 +1,17 @@
 package ru.sicampus.bootcamp2026.data.source
 
-import androidx.lifecycle.viewmodel.compose.viewModel
+import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import ru.sicampus.bootcamp2026.data.dto.MeetinCreateDTO
-import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.MeetingInfoViewModel
 
-class MeetingCreateNetDataSource {
-
+class ResponseInvitationDataSource {
     private val _userId: MutableStateFlow<Long?> = MutableStateFlow(null)
     val data = UsersInfoDataSource()
 
@@ -34,19 +29,15 @@ class MeetingCreateNetDataSource {
             )
     }
 
-    suspend fun createMeeting(
-        meeting: MeetinCreateDTO,
-        usersPreferences: UserPreferences
-        ): Boolean = withContext(Dispatchers.IO){
-        val token = AuthLocalDataSource.token ?: error("Not authorized")
-
+    suspend fun sendResponse(invitationId: String, status: String, usersPreferences: UserPreferences):Boolean = withContext(Dispatchers.IO){
+        val token = AuthLocalDataSource.token ?: return@withContext false
         val userId = loadAndReturnUserID(usersPreferences.getUserEmail())
 
-        val result = Network.client.post("${Network.HOST}/api/meetings") {
+        val result = Network.client.post("${Network.HOST}/api/invitations/$invitationId/respond") {
             header(HttpHeaders.Authorization, "Basic $token")
-            header("X-User-Id", userId)
+            header("X-User-Id", userId.toString())
             header(HttpHeaders.ContentType, "application/json")
-            setBody(Json.encodeToString(meeting))
+            setBody(status)
         }
 
         result.status == HttpStatusCode.OK

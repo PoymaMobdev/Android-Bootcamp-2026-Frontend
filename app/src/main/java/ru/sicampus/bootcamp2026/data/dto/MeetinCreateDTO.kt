@@ -11,9 +11,9 @@ data class MeetinCreateDTO(
     @SerialName("topic")
     val topic: String,
     @SerialName("dateTime")
-    val dateTime: String, // ISO 8601 формат: "2023-12-15T14:30:00Z"
+    val dateTime: String,
     @SerialName("participantIds")
-    val participantIds: List<Long>
+    val participantIds: List<Long?>
 
 ){
     @SuppressLint("NewApi")

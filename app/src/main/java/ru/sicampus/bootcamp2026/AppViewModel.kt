@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class AppViewModel: ViewModel() {
+class AppViewModel(): ViewModel() {
     private val _appState: MutableStateFlow<ViewModelState> = MutableStateFlow(ViewModelState.Loading)
-
+    var selectedInvitationId: String = ""
     var appState = _appState.asStateFlow()
 
     init{

@@ -14,7 +14,7 @@ data class ProfileUpdateDTO(
     val email: String?,
     @SerialName("avatarUrl")
     val avatarUrl: String?,
-    @SerialName("newPassword")
-    val newPassword: String? = null
+    @SerialName("currentPassword")
+    val currentPassword: String? = null
 
 )

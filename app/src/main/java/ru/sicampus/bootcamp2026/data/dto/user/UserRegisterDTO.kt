@@ -8,7 +8,7 @@ data class UserRegisterDTO(
     @SerialName("fullName")
     val fullName: String,
     @SerialName("jobTitle")
-    val jobTitle: List<String>,
+    val jobTitle: String,
     @SerialName("email")
     val email: String,
     @SerialName("password")
@@ -16,5 +16,5 @@ data class UserRegisterDTO(
     @SerialName("passwordConfirm")
     val passwordConfirm: String,
     @SerialName("department")
-    val department: List<String>
+    val department: String
 )

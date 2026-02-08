@@ -42,6 +42,7 @@ import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.ViewModelState
 import ru.sicampus.bootcamp2026.data.dto.ScheduleEntryDTO
 import ru.sicampus.bootcamp2026.data.source.ScheduleNetworkDataSource
+import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Surface
 import ru.sicampus.bootcamp2026.ui.theme.screens.TimeTable.TTViewModel
@@ -53,7 +54,7 @@ import java.time.LocalDate
 @Composable
 fun WeekView(
     appViewModel: AppViewModel,
-    viewModel: TTViewModel = viewModel()
+    userPreferences: UserPreferences
 ) {
     val today = LocalDate.now()
     val data = ScheduleNetworkDataSource()
@@ -68,8 +69,8 @@ fun WeekView(
     )
 
     LaunchedEffect(Unit) {
-        meetingNames = data.findMeetingsTitles()
-        times = data.findMeetingsDT()
+        meetingNames = data.findMeetingsTitles(userPreferences)
+        times = data.findMeetingsDT(userPreferences)
     }
 
 
@@ -172,11 +173,11 @@ fun getWeeksFromToday(today: LocalDate, weeksCount: Int): List<List<LocalDate>> 
 @Composable
 fun WeekViewPreview(
     appViewModel: AppViewModel,
-    viewModel: TTViewModel = viewModel()
+    userPreferences: UserPreferences
 ) {
     AndroidBootcamp2026FrontendTheme {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            WeekView(appViewModel)
+            WeekView(appViewModel, userPreferences)
         }
     }
 }

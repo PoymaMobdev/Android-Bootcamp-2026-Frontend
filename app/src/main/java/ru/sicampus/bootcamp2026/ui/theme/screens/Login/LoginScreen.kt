@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.sicampus.bootcamp2026.ui.theme.DeepBlue
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.collectAsState
@@ -174,7 +175,7 @@ private fun LoginContent(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
+                        .heightIn(min = 56.dp),
                     value = email,
                     shape = RoundedCornerShape(6.dp),
                     onValueChange = { email = it },
@@ -192,7 +193,7 @@ private fun LoginContent(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
+                        .heightIn(min = 56.dp),
                     value = password,
                     onValueChange = { password = it},
                     shape = RoundedCornerShape(6.dp),

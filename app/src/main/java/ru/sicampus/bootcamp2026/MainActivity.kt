@@ -47,6 +47,7 @@ class MainActivity() : ComponentActivity() {
                         }
                     }
                 )
+
                 val meetingState by meetingResponseVm.uiState.collectAsState()
 
                 val state by viewModel.appState.collectAsState()
@@ -54,26 +55,9 @@ class MainActivity() : ComponentActivity() {
                 val userPreferences = remember { UserPreferences(context) }
                 when(val currState = state) {
                     is ViewModelState.Login -> LoginScreen(viewModel, userPreferences)
-                    is ViewModelState.Invitations-> InvitationListScreen(viewModel)
+                    is ViewModelState.Invitations-> InvitationListScreen(viewModel, userPreferences)
                     is ViewModelState.TimeTable -> TimetableScreen(viewModel, userPreferences)
                     is ViewModelState.Profile -> ProfileScreen(viewModel, userPreferences)
-                    is ViewModelState.MeetingResponse -> {
-                        when (val state = meetingState) {
-                            is MeetingResponseState.Content ->
-                                MeetingResponseScreen(
-                                    users = state.users,
-                                    appViewModel = viewModel
-                                )
-                            is MeetingResponseState.Loading ->
-                                CircularProgressIndicator()
-                            is MeetingResponseState.Error ->
-                                Text("Ошибка: ${state.reason}")
-                        }
-                    }
-                    ViewModelState.CreateMeeting -> CreateMeetingScreen(
-                        userPreferences = userPreferences,
-                        appViewModel = viewModel
-                    )
                     //is ViewModelState.Loading ->
                     //is ViewModelState.Error ->
                     else -> LoginScreen(viewModel, userPreferences)

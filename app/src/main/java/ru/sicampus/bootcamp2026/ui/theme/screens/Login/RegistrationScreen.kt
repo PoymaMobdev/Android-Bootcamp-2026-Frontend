@@ -33,9 +33,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.sicampus.bootcamp2026.ui.theme.DeepBlue
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.zIndex
+import ru.sicampus.bootcamp2026.data.source.JobDepNetworkDataSource
+import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 
 @Composable
@@ -43,14 +53,22 @@ fun RegistrationScreen(
     onRegistrationClick: () -> Unit,
     onIntent: (AuthIntent) -> Unit,
 
-){
+    ){
     var fullName by remember { mutableStateOf("") }
     var jobTitle by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordConfirm by remember { mutableStateOf("") }
     var department by remember { mutableStateOf("") }
+    var jobOptions by remember { mutableStateOf<List<String>>(emptyList()) }
+    var deptOptions by remember { mutableStateOf<List<String>>(emptyList()) }
 
+    val data = JobDepNetworkDataSource()
+
+    LaunchedEffect(Unit) {
+        jobOptions = data.getJobTitles()
+        deptOptions = data.getDepartment()
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -96,15 +114,14 @@ fun RegistrationScreen(
 
         Surface(
             modifier = Modifier
-                .width(368.dp)
-                .height(625.dp)
+                .widthIn(368.dp)
+                .heightIn(635.dp)
                 .align(Alignment.Center)
-                .padding(6.dp),
+                .padding(15.dp),
             shape = RoundedCornerShape(24.dp)
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
                     .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -117,7 +134,7 @@ fun RegistrationScreen(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
+                        .heightIn(min = 56.dp),
                     value = fullName,
                     shape = RoundedCornerShape(6.dp),
                     onValueChange = { fullName = it },
@@ -133,77 +150,91 @@ fun RegistrationScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
 
-
-                var showJobDropdown by remember { mutableStateOf(false) }
+                var expandedJob by remember { mutableStateOf(false) }
                 Box(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .zIndex(1f)
                 ) {
                     OutlinedButton(
-                        onClick = { showJobDropdown = true },
+                        onClick = { expandedJob = !expandedJob },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp),
+                            .heightIn(min = 56.dp),
                         shape = RoundedCornerShape(6.dp)
                     ) {
                         Text(
                             if (jobTitle.isNotEmpty()) jobTitle else "Должность",
-                            fontSize = 14.sp
+                        fontSize = 14.sp
+                        )
+                        Icon(
+                            Icons.Default.KeyboardArrowDown,
+                            contentDescription = "dropdown",
+                            tint = Color.DarkGray
                         )
                     }
 
                     DropdownMenu(
-                        expanded = showJobDropdown,
-                        onDismissRequest = { showJobDropdown = false },
+                        expanded = expandedJob,
+                        onDismissRequest = { expandedJob = false },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        jobTitle.forEach { option ->
+                        jobOptions.forEach { option ->
                             DropdownMenuItem(
-                                text = { Text(option.toString()) },
+                                text = { Text(option) },
                                 onClick = {
-                                    jobTitle = option.toString()
-                                    showJobDropdown = false
+                                    jobTitle = option
+                                    expandedJob = false
                                 }
                             )
                         }
                     }
                 }
 
-                var showDeptDropdown by remember { mutableStateOf(false) }
+                var expandedDept by remember { mutableStateOf(false) }
 
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Box(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .zIndex(1f)
                 ) {
                     OutlinedButton(
-                        onClick = { showDeptDropdown = true },
+                        onClick = { expandedDept = true },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp),
+                            .heightIn(min = 56.dp),
                         shape = RoundedCornerShape(6.dp)
                     ) {
                         Text(
                             if (department.isNotEmpty()) department else "Отдел",
                             fontSize = 14.sp
                         )
+                        Icon(
+                            Icons.Default.KeyboardArrowDown,
+                            contentDescription = "dropdown",
+                            tint = Color.DarkGray
+                        )
                     }
 
                     DropdownMenu(
-                        expanded = showDeptDropdown,
-                        onDismissRequest = { showDeptDropdown = false },
+                        expanded = expandedDept,
+                        onDismissRequest = { expandedDept = false },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        department.forEach { option ->
+                        deptOptions.forEach { option ->
                             DropdownMenuItem(
-                                text = { Text(option.toString()) },
+                                text = { Text(option) },
                                 onClick = {
-                                    department = option.toString()
-                                    showDeptDropdown = false
+                                    department = option
+                                    expandedDept = false
                                 }
                             )
                         }
                     }
                 }
+
 
                 Spacer(modifier = Modifier.height(20.dp))
 
@@ -211,7 +242,7 @@ fun RegistrationScreen(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
+                        .heightIn(min = 56.dp),
                     value = email,
                     shape = RoundedCornerShape(6.dp),
                     onValueChange = { email = it },
@@ -229,7 +260,7 @@ fun RegistrationScreen(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
+                        .heightIn(min = 56.dp),
                     value = password,
                     onValueChange = { password = it },
                     shape = RoundedCornerShape(6.dp),
@@ -247,7 +278,7 @@ fun RegistrationScreen(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
+                        .heightIn(min = 56.dp),
                     value = passwordConfirm,
                     onValueChange = { passwordConfirm = it },
                     shape = RoundedCornerShape(6.dp),
@@ -279,11 +310,12 @@ fun RegistrationScreen(
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun RegistrationScreenPreviewTablet() {
+fun RegistrationScreenPreviewTablet(
+) {
     AndroidBootcamp2026FrontendTheme {
         RegistrationScreen(
             onRegistrationClick = {},
-            onIntent = { _ -> }
+            onIntent = { _ -> },
         )
     }
 }
