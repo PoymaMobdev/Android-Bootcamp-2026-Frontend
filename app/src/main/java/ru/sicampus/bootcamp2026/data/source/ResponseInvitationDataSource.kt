@@ -37,7 +37,7 @@ class ResponseInvitationDataSource {
             header(HttpHeaders.Authorization, "Basic $token")
             header("X-User-Id", userId.toString())
             header(HttpHeaders.ContentType, "application/json")
-            setBody(status)
+            setBody("{\"status\": \"$status\"}")
         }
 
         result.status == HttpStatusCode.OK

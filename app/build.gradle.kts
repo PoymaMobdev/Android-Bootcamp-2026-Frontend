@@ -58,7 +58,12 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.foundation.layout)
+    implementation(libs.androidx.compose.ui.text)
+    implementation(libs.androidx.compose.foundation)
     testImplementation(libs.junit)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation("io.coil-kt:coil:2.6.0")
     implementation("io.coil-kt:coil-compose:2.6.0")

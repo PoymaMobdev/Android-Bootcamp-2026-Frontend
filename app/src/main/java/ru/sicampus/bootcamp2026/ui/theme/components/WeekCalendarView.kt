@@ -169,7 +169,7 @@ fun getWeeksFromToday(today: LocalDate, weeksCount: Int): List<List<LocalDate>> 
 }
 
 @SuppressLint("NewApi")
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun WeekViewPreview(
     appViewModel: AppViewModel,

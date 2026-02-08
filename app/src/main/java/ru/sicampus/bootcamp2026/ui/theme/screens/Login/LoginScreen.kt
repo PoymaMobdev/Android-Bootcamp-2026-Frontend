@@ -42,6 +42,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.data.source.UserPreferences
+import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 
 
 @Composable
@@ -237,6 +238,8 @@ private fun LoginContent(
 @Preview(showBackground = true)
 @Composable
 fun LoginPreview() {
-    _root_ide_package_.ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme {
-    }
+    AndroidBootcamp2026FrontendTheme { LoginContent(
+        onIntent = {},
+        LoginClick = {}
+    ) }
 }

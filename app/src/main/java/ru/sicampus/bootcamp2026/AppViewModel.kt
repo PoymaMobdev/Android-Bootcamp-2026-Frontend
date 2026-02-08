@@ -6,27 +6,33 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.sicampus.bootcamp2026.data.source.AuthLocalDataSource
+import ru.sicampus.bootcamp2026.data.source.UserPreferences
 
-class AppViewModel(): ViewModel() {
+class AppViewModel(
+    private val userPreferences: UserPreferences
+): ViewModel() {
     private val _appState: MutableStateFlow<ViewModelState> = MutableStateFlow(ViewModelState.Loading)
     var selectedInvitationId: String = ""
     var appState = _appState.asStateFlow()
 
     init{
-        getData()
+        checkAuth()
     }
 
     fun NavigateTo(state: ViewModelState){
         _appState.value = state
     }
 
-    fun getData() {
+    private fun checkAuth() {
         viewModelScope.launch {
-            _appState.emit(ViewModelState.Login)
-
-            delay(2000L)
-
-            //_appState.emit(ViewModelState.Error("Error"))
+            val token = userPreferences.getAccessToken()
+            if (!token.isNullOrEmpty()) {
+                AuthLocalDataSource.token = token
+                _appState.value = ViewModelState.TimeTable
+            } else {
+                _appState.value = ViewModelState.Login
+            }
         }
     }
 }

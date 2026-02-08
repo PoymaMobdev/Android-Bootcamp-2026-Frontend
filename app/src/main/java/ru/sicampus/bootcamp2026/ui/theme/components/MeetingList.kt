@@ -1,32 +1,34 @@
 package ru.sicampus.bootcamp2026.ui.theme.components
 
-
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
-import ru.sicampus.bootcamp2026.ui.theme.DeepBlue
-import ru.sicampus.bootcamp2026.ui.theme.Gray
-import ru.sicampus.bootcamp2026.ui.theme.Typography
+
+val CardBlue = Color(0xFF6A82FB)
 
 @Composable
 fun MeetingListItem(
@@ -34,29 +36,37 @@ fun MeetingListItem(
     dateAndTime: String
 ) {
     Row(
-        modifier = Modifier.padding(horizontal = 12.dp, vertical = 20.dp).fillMaxWidth(),
+        modifier = Modifier
+            .padding(start = 20.dp, end = 10.dp, top = 20.dp, bottom = 20.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = Modifier.padding(start = 6.dp)
+            modifier = Modifier.weight(1f)
         ) {
             Text(
-                meetingName,
-                Modifier.padding(bottom = 5.dp),
-                style = Typography.bodyLarge
+                text = meetingName,
+                modifier = Modifier.padding(bottom = 8.dp),
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium
             )
             Text(
-                dateAndTime,
-                style = Typography.labelSmall
+                text = dateAndTime,
+                color = Color.White.copy(alpha = 0.9f),
+                fontSize = 14.sp
             )
         }
-        Spacer(modifier = Modifier.weight(1f))
+
+        // Кнопка с иконкой "i"
         IconButton(
             onClick = {},
-            modifier = Modifier.align(Alignment.CenterVertically),
         ) {
             Icon(
-                imageVector = Icons.Default.Info,
-                contentDescription = "Информация о встрече"
+                imageVector = Icons.Outlined.Info,
+                contentDescription = "Информация",
+                tint = Color.White,
+                modifier = Modifier.size(28.dp)
             )
         }
     }
@@ -68,35 +78,39 @@ fun MeetingList(
     datesAndTimes: List<String>,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier.height(548.dp)) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(bottom = 100.dp, top = 16.dp, start = 16.dp, end = 16.dp)
+    ) {
         itemsIndexed(meetingNames) { index, meetingName ->
+            val time = datesAndTimes.getOrElse(index) { "" }
+
             Card(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp, horizontal = 20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Gray,
+                    containerColor = CardBlue,
                 ),
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(24.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
-                if (meetingNames.isNotEmpty() && datesAndTimes.isNotEmpty()) {
-                    MeetingListItem(
-                        meetingName = meetingName,
-                        dateAndTime = datesAndTimes[index]
-                    )
-                    Text("Вы создали встречу", modifier = Modifier.padding(16.dp))
-                } else {
-                    Text("Нет встреч")
-                }
+                MeetingListItem(
+                    meetingName = meetingName,
+                    dateAndTime = time
+                )
             }
         }
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PreviewMeetingList() {
-    val meetingNames : List<String> = listOf("Анна", "Борис", "Василий")
-    val datesAndTimes : List<String> = listOf("123124", "45745754", "465")
-    AndroidBootcamp2026FrontendTheme() {
+    val meetingNames: List<String> = listOf("Планерка", "Планерка", "Планерка", "Планерка", "Планерка")
+    val datesAndTimes: List<String> = listOf("08.02.2026 09:00", "08.02.2026 10:00", "08.02.2026 11:00", "08.02.2026 15:00", "08.02.2026 16:00")
+
+    AndroidBootcamp2026FrontendTheme {
         MeetingList(meetingNames, datesAndTimes)
     }
 }

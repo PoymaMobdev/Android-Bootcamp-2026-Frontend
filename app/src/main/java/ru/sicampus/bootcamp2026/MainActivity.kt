@@ -32,39 +32,48 @@ import ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo.MeetingResponseView
 import ru.sicampus.bootcamp2026.ui.theme.screens.Profile.ProfileScreen
 import ru.sicampus.bootcamp2026.ui.theme.screens.TimeTable.TimetableScreen
 
-class MainActivity() : ComponentActivity() {
+class MainActivity : ComponentActivity() {
+
+    private val userPreferences by lazy { UserPreferences(applicationContext) }
+
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
-            AndroidBootcamp2026FrontendTheme{
-                val viewModel: AppViewModel = viewModel()
+            AndroidBootcamp2026FrontendTheme {
+
+                val viewModel: AppViewModel = viewModel(
+                    factory = object : ViewModelProvider.Factory {
+                        @Suppress("UNCHECKED_CAST")
+                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                            return AppViewModel(userPreferences) as T
+                        }
+                    }
+                )
+
                 val meetingResponseVm: MeetingResponseViewModel = viewModel(
                     factory = object : ViewModelProvider.Factory {
+                        @Suppress("UNCHECKED_CAST")
                         override fun <T : ViewModel> create(modelClass: Class<T>): T {
                             return MeetingResponseViewModel(viewModel) as T
                         }
                     }
                 )
 
-                val meetingState by meetingResponseVm.uiState.collectAsState()
-
                 val state by viewModel.appState.collectAsState()
-                val context = LocalContext.current
-                val userPreferences = remember { UserPreferences(context) }
-                when(val currState = state) {
+
+                when (val currState = state) {
                     is ViewModelState.Login -> LoginScreen(viewModel, userPreferences)
-                    is ViewModelState.Invitations-> InvitationListScreen(viewModel, userPreferences)
+                    is ViewModelState.Invitations -> InvitationListScreen(viewModel, userPreferences)
                     is ViewModelState.TimeTable -> TimetableScreen(viewModel, userPreferences)
                     is ViewModelState.Profile -> ProfileScreen(viewModel, userPreferences)
-                    //is ViewModelState.Loading ->
-                    //is ViewModelState.Error ->
+                    is ViewModelState.CreateMeeting -> CreateMeetingScreen(viewModel, userPreferences)
                     else -> LoginScreen(viewModel, userPreferences)
                 }
             }
         }
-
     }
 }
 

@@ -77,15 +77,8 @@ class InvitationViewModel(private val appViewModel: AppViewModel): ViewModel() {
                 status = "ACCEPTED",
                 usersPreferences = userPreferences
             )
-            val id = meetingSource.loadAndReturnUserID(userPreferences.getUserEmail())
 
-            val meetingDTO = MeetinCreateDTO(
-                topic = invitationTopic,
-                dateTime = invitationDateTime,
-                participantIds = listOf(id)
-            )
-            meetingSource.createMeeting(meetingDTO, userPreferences)
-            deletInvite(invitationId, userPreferences)
+            deleteInvite(invitationId, userPreferences)
 
 
 
@@ -93,12 +86,11 @@ class InvitationViewModel(private val appViewModel: AppViewModel): ViewModel() {
     }
 
     val invitationsSource = InvitationNetworkDataSource()
-    fun deletInvite(invitationId: String, userPreferences: UserPreferences) {
+    fun deleteInvite(invitationId: String, userPreferences: UserPreferences) {
         viewModelScope.launch {
             _invitations.update { currentList ->
                 currentList.filter { it.invitationId != invitationId }
             }
-            deletInvite(invitationId,userPreferences)
         }
 
     }

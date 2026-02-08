@@ -68,7 +68,7 @@ class LoginViewModel(
 
 
     fun onLoginClick(){
-        appViewModel.NavigateTo(ViewModelState.Invitations)
+        appViewModel.NavigateTo(ViewModelState.TimeTable)
     }
 
     fun LoginClick() {
@@ -78,25 +78,37 @@ class LoginViewModel(
     }
 
 
-    fun onIntent(intent: AuthIntent){
-        when(intent){
-            is AuthIntent.Send ->{
+    fun onIntent(intent: AuthIntent) {
+        when (intent) {
+            is AuthIntent.Send -> {
                 viewModelScope.launch {
-                    userPreferences.saveUserEmail(intent.email)
+                    android.util.Log.d("LOGIN_DEBUG", "Email: ${intent.email}, Pass: ${intent.password}")
+
+                    val token = AuthLocalDataSource.setToken(intent.email, intent.password)
+
+                    android.util.Log.d("LOGIN_DEBUG", "Generated Token: $token")
+
                     val authCompleted = checkAndSaveAuthUseCase.invoke(
                         intent.email,
                         intent.password
                     )
+
                     if (authCompleted.isSuccess) {
+                        android.util.Log.d("LOGIN_DEBUG", "Success! Saving to prefs...")
+                        userPreferences.saveUserAuth(token, intent.email)
                         onLoginClick()
-                    }else{
-                        _uiState.emit(LoginState.Error("Error"))
-                        }
+                    } else {
+                        android.util.Log.e("LOGIN_DEBUG", "Server error: ${authCompleted.exceptionOrNull()}")
+                        AuthLocalDataSource.clearToken()
+                        _uiState.emit(LoginState.Error("Ошибка авторизации"))
+                    }
                 }
             }
             is AuthIntent.Reg -> {
                 viewModelScope.launch {
-                    userPreferences.saveUserEmail(intent.email)
+
+                    android.util.Log.d("REG_DEBUG", "Registering: ${intent.email}")
+
                     val regCompeted = registrationUseCase.invoke(
                         intent.fullName,
                         intent.jobTitle,
@@ -106,21 +118,23 @@ class LoginViewModel(
                         intent.department
                     )
 
-                    if(regCompeted.isSuccess){
+                    if (regCompeted.isSuccess) {
+                        val token = AuthLocalDataSource.setToken(intent.email, intent.password)
+                        userPreferences.saveUserAuth(token, intent.email)
+
                         val loginResult = checkAndSaveAuthUseCase.invoke(
                             intent.email,
                             intent.password
                         )
-                        if(loginResult.isSuccess){
+
+                        if (loginResult.isSuccess) {
                             delay(1500)
                             onLoginClick()
+                        } else {
+                            _uiState.emit(LoginState.Error("Ошибка входа после регистрации"))
                         }
-                        else{
-                            _uiState.emit(LoginState.Error("Error"))
-                        }
-                    }
-                    else{
-                        _uiState.emit(LoginState.Error("Error"))
+                    } else {
+                        _uiState.emit(LoginState.Error("Ошибка регистрации"))
                     }
                 }
             }

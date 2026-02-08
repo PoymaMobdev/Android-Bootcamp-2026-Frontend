@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.ui.theme.screens.Profile
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -20,6 +21,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -27,6 +29,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,23 +39,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import ru.sicampus.bootcamp2026.R
 import ru.sicampus.bootcamp2026.data.source.JobDepNetworkDataSource
-import ru.sicampus.bootcamp2026.ui.theme.Typography
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Blue
 import ru.sicampus.bootcamp2026.ui.theme.Surface
-import androidx.compose.material3.Icon
+import ru.sicampus.bootcamp2026.ui.theme.Typography
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ProfileEditScreen(){
+fun ProfileEditScreen(
+    viewModel: ProfileViewModel = viewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    var serverAvatarUrl by remember { mutableStateOf("") }
+
+    var fullName by remember { mutableStateOf("") }
+    var jobTitle by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+
+    LaunchedEffect(uiState) {
+        if (uiState is ProfileState.EdContent) {
+            val state = uiState as ProfileState.EdContent
+            fullName = state.fio
+            jobTitle = state.jobTitle
+            email = state.email
+            serverAvatarUrl = state.avatarUrl
+        }
+    }
+
     Scaffold(
         contentColor = MaterialTheme.colorScheme.background
     ) {
@@ -60,7 +86,16 @@ fun ProfileEditScreen(){
             modifier = Modifier.fillMaxWidth(),
         ) {
 
-            MainProfileContent()
+            MainProfileContent(
+                viewModel = viewModel,
+                fullNameValue = fullName,
+                jobTitleValue = jobTitle,
+                emailValue = email,
+                avatarUrlValue = serverAvatarUrl,
+                onFullNameChange = { fullName = it },
+                onJobTitleChange = { jobTitle = it },
+                onEmailChange = { email = it }
+            )
 
             Image(
                 painter = painterResource(R.drawable.profile_wave2),
@@ -85,14 +120,21 @@ fun ProfileEditScreen(){
                     style = Typography.titleLarge,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
-                Image(
-                    painter = painterResource(id = R.drawable.sample_avatar),
+
+                val modelToDisplay = selectedImageUri ?: serverAvatarUrl
+
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(modelToDisplay)
+                        .crossfade(true)
+                        .build(),
+                    placeholder = painterResource(R.drawable.sample_avatar),
+                    error = painterResource(R.drawable.sample_avatar),
                     contentDescription = "avatar",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(144.dp)
                         .clip(CircleShape)
-
                 )
             }
         }
@@ -101,17 +143,17 @@ fun ProfileEditScreen(){
 
 @Composable
 fun MainProfileContent(
-    viewModel: ProfileViewModel = viewModel(),
-){
+    viewModel: ProfileViewModel,
+    fullNameValue: String,
+    jobTitleValue: String,
+    emailValue: String,
+    avatarUrlValue: String,
+    onFullNameChange: (String) -> Unit,
+    onJobTitleChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit
+) {
     var jobOptions by remember { mutableStateOf<List<String>>(emptyList()) }
-
-
-    var fullName by remember { mutableStateOf("") }
-    var jobTitle by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-
     var currentPassword by remember { mutableStateOf("") }
-    var avatarUrl by remember { mutableStateOf("") }
 
     val data = JobDepNetworkDataSource()
 
@@ -127,12 +169,12 @@ fun MainProfileContent(
                 containerColor = Surface,
             ),
             modifier = Modifier.fillMaxWidth()
-        ){
+        ) {
             Column(
                 modifier = Modifier.padding(22.dp)
-            ){
+            ) {
                 Spacer(modifier = Modifier.height(250.dp))
-                ProfileFields("ФИО", fullName ){fullName = it}
+                ProfileFields("ФИО", fullNameValue, onFullNameChange)
                 Spacer(modifier = Modifier.height(20.dp))
 
                 var expanded by remember { mutableStateOf(false) }
@@ -149,7 +191,7 @@ fun MainProfileContent(
                         shape = RoundedCornerShape(6.dp)
                     ) {
                         Text(
-                            if (jobTitle.isNotEmpty()) jobTitle else "Должность",
+                            if (jobTitleValue.isNotEmpty()) jobTitleValue else "Должность",
                             fontSize = 14.sp
                         )
                         Icon(
@@ -167,7 +209,7 @@ fun MainProfileContent(
                             DropdownMenuItem(
                                 text = { Text(option) },
                                 onClick = {
-                                    jobTitle = option
+                                    onJobTitleChange(option)
                                     expanded = false
                                 }
                             )
@@ -176,7 +218,7 @@ fun MainProfileContent(
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
-                ProfileFields("Email", email){email = it}
+                ProfileFields("Email", emailValue, onEmailChange)
                 Spacer(modifier = Modifier.height(20.dp))
                 ProfileFields("Текущий пароль", currentPassword) { currentPassword = it }
 
@@ -184,41 +226,35 @@ fun MainProfileContent(
         }
         Button(
             onClick = {
-                viewModel.saveChanges(fullName,jobTitle,email,"", currentPassword)
+                viewModel.saveChanges(fullNameValue, jobTitleValue, emailValue, avatarUrlValue, currentPassword)
             },
             shape = RoundedCornerShape(6.dp),
             modifier = Modifier.fillMaxWidth().padding(top = 30.dp, bottom = 5.dp),
-        ){
-            Text(
-                "Сохранить"
-            )
+        ) {
+            Text("Сохранить")
         }
         OutlinedButton(
             onClick = { viewModel.cancelChanges() },
             shape = RoundedCornerShape(6.dp),
             modifier = Modifier.fillMaxWidth(),
             border = BorderStroke(2.dp, Blue)
-        ){
-            Text(
-                "Отменить изменения",
-                color = Blue
-            )
+        ) {
+            Text("Отменить изменения", color = Blue)
         }
     }
 }
 
-
 @Composable
-fun ProfileFields (
+fun ProfileFields(
     label: String,
     value: String,
     onValueChange: (String) -> Unit
 ) {
-    var text by remember { mutableStateOf(value) }
     OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
         value = value,
         textStyle = Typography.labelSmall,
-        onValueChange =  onValueChange,
+        onValueChange = onValueChange,
         maxLines = 1,
         label = { Text(label) }
     )
@@ -226,8 +262,7 @@ fun ProfileFields (
 
 @Preview
 @Composable
-fun ProfileEditScreenPreview(){
+fun ProfileEditScreenPreview() {
     AndroidBootcamp2026FrontendTheme {
-        ProfileEditScreen()
     }
 }

@@ -9,12 +9,13 @@ sealed interface ProfileState {
         val email: String,
         val avatarUrl: String,
 
-    ): ProfileState
+        ): ProfileState
 
     data class EdContent(
         var fio: String,
         var jobTitle: String,
         var email: String,
+        val avatarUrl: String,
         var password: String
     ):ProfileState
 }
