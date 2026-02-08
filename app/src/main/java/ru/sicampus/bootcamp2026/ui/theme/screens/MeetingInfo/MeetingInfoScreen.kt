@@ -5,7 +5,9 @@ import ru.sicampus.bootcamp2026.ui.theme.components.userList.UserList
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.fillMaxSize
+import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
@@ -163,5 +165,34 @@ private fun MeetingInfoContent(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MeetingInfoPreview() {
+    val mockUsers = listOf(
+        UserEntity(
+            fullName = "Иван Иванов",
+            jobTitle = "Android Developer",
+            email = "ivan@example.com",
+            avatarUrl = ""
+        ),
+        UserEntity(
+            fullName = "Мария Петрова",
+            jobTitle = "Product Manager",
+            email = "maria@example.com",
+            avatarUrl = ""
+        ),
+        UserEntity(
+            fullName = "Сергей Сидоров",
+            jobTitle = "Backend Developer",
+            email = "sergey@example.com",
+            avatarUrl = ""
+        )
+    )
+
+    AndroidBootcamp2026FrontendTheme {
+        MeetingInfoContent(users = mockUsers)
     }
 }

@@ -63,7 +63,7 @@ fun LoginScreen(
         is LoginState.Error -> LoginError(currentState, onRefresh = {viewModel.getData()})
         is LoginState.Loading -> LoginLoading()
         is LoginState.Content -> LoginContent(onIntent = { intent -> viewModel.onIntent(intent)}, LoginClick = {viewModel.LoginClick()} )
-        is LoginState.Reg -> RegistrationScreen(onRegistrationClick = {viewModel.onRegistrationClick()}, onIntent = {intent -> viewModel.onIntent(intent)} )
+        is LoginState.Reg -> RegistrationScreen(onBackClick = {viewModel.onRegistrationClick()}, onIntent = {intent -> viewModel.onIntent(intent)} )
     }
 
 }

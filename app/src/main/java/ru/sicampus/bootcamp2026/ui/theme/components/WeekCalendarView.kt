@@ -5,7 +5,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,22 +32,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.ViewModelState
-import ru.sicampus.bootcamp2026.data.dto.ScheduleEntryDTO
 import ru.sicampus.bootcamp2026.data.source.ScheduleNetworkDataSource
 import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Surface
-import ru.sicampus.bootcamp2026.ui.theme.screens.TimeTable.TTViewModel
 import java.time.DayOfWeek
 import java.time.LocalDate
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -57,23 +51,37 @@ fun WeekView(
     userPreferences: UserPreferences
 ) {
     val today = LocalDate.now()
-    val data = ScheduleNetworkDataSource()
-    val weeks = getWeeksFromToday(today, 52)
+    val weeks = remember { getWeeksFromToday(today, 52) }
     var meetingNames by remember { mutableStateOf<List<String>>(emptyList()) }
     var times by remember { mutableStateOf<List<String>>(emptyList()) }
 
+    LaunchedEffect(Unit) {
+        val data = ScheduleNetworkDataSource()
+        meetingNames = data.findMeetingsTitles(userPreferences)
+        times = data.findMeetingsDT(userPreferences)
+    }
+
+    WeekViewContent(
+        weeks = weeks,
+        meetingNames = meetingNames,
+        times = times,
+        onAddMeetingClick = { appViewModel.NavigateTo(ViewModelState.CreateMeeting) }
+    )
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun WeekViewContent(
+    weeks: List<List<LocalDate>>,
+    meetingNames: List<String>,
+    times: List<String>,
+    onAddMeetingClick: () -> Unit
+) {
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f,
         pageCount = { weeks.size }
     )
-
-    LaunchedEffect(Unit) {
-        meetingNames = data.findMeetingsTitles(userPreferences)
-        times = data.findMeetingsDT(userPreferences)
-    }
-
-
 
     Column(
         modifier = Modifier
@@ -94,11 +102,13 @@ fun WeekView(
                 )
             }
         }
+
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.fillMaxWidth().background(Surface)
-        )
-        { page ->
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Surface)
+        ) { page ->
             val weekDates = weeks[page]
 
             Row(
@@ -112,12 +122,9 @@ fun WeekView(
                             .weight(1f)
                             .height(48.dp)
                             .clip(CircleShape)
-                            .clickable(
-                            ) {
-
-                                //TODO: заполнение meetingNames и datesAndTimes
+                            .clickable {
+                                // TODO: Handle date selection
                             },
-
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -128,9 +135,12 @@ fun WeekView(
                 }
             }
         }
+
         Button(
-            onClick = { appViewModel.NavigateTo(ViewModelState.CreateMeeting) },
-            modifier = Modifier.fillMaxWidth().padding(15.dp),
+            onClick = onAddMeetingClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Surface,
             ),
@@ -145,11 +155,23 @@ fun WeekView(
                     tint = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
-                Text("Назначить встречу",
-                    color = MaterialTheme.colorScheme.onSurface)
+                Text(
+                    "Назначить встречу",
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
         }
+
         MeetingList(meetingNames, times)
+    }
+}
+
+@Composable
+fun MeetingList(names: List<String>, times: List<String>) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        names.zip(times).forEach { (name, time) ->
+            Text(text = "$name at $time")
+        }
     }
 }
 
@@ -169,17 +191,20 @@ fun getWeeksFromToday(today: LocalDate, weeksCount: Int): List<List<LocalDate>> 
 }
 
 @SuppressLint("NewApi")
-@Preview(showBackground = false)
+@Preview(showBackground = true)
 @Composable
-fun WeekViewPreview(
-    appViewModel: AppViewModel,
-    userPreferences: UserPreferences
-) {
+fun WeekViewPreview() {
+    val today = LocalDate.now()
+    val mockWeeks = getWeeksFromToday(today, 1)
+    val mockNames = listOf("Daily Standup", "Client Meeting")
+    val mockTimes = listOf("10:00", "14:30")
+
     AndroidBootcamp2026FrontendTheme {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            WeekView(appViewModel, userPreferences)
-        }
+        WeekViewContent(
+            weeks = mockWeeks,
+            meetingNames = mockNames,
+            times = mockTimes,
+            onAddMeetingClick = {}
+        )
     }
 }
-
-

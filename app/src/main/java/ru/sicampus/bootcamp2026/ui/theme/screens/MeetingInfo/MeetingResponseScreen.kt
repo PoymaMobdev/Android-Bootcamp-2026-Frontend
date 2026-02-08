@@ -6,7 +6,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import ru.sicampus.bootcamp2026.ui.theme.components.userList.UserList
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
@@ -27,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -34,16 +34,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.R
 import ru.sicampus.bootcamp2026.domain.entities.UserEntity
+import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Blue
 import ru.sicampus.bootcamp2026.ui.theme.Surface
 import ru.sicampus.bootcamp2026.ui.theme.Typography
+import ru.sicampus.bootcamp2026.ui.theme.components.userList.UserList
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MeetingResponseScreen(
     users: List<UserEntity>,
     appViewModel: AppViewModel
-
 ) {
     val viewModel: MeetingInfoViewModel = viewModel(
         factory = object : ViewModelProvider.Factory {
@@ -52,8 +53,25 @@ fun MeetingResponseScreen(
             }
         }
     )
-    Scaffold() {
-        Column (
+
+    MeetingResponseContent(
+        users = users,
+        onAcceptClick = { /* viewModel.accept() */ },
+        onDeclineClick = { /* viewModel.decline() */ },
+        onCloseClick = { /* appViewModel.back() */ }
+    )
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+private fun MeetingResponseContent(
+    users: List<UserEntity>,
+    onAcceptClick: () -> Unit,
+    onDeclineClick: () -> Unit,
+    onCloseClick: () -> Unit
+) {
+    Scaffold {
+        Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Box(
@@ -129,7 +147,7 @@ fun MeetingResponseScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
                 IconButton(
-                    onClick = {},
+                    onClick = onCloseClick,
                     modifier = Modifier.align(Alignment.TopEnd).padding(7.dp)
                 ) {
                     Icon(
@@ -143,22 +161,22 @@ fun MeetingResponseScreen(
                 modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
             ) {
                 Button(
-                    onClick = {},
+                    onClick = onAcceptClick,
                     shape = RoundedCornerShape(6.dp),
                     modifier = Modifier.weight(1f).padding(start = 40.dp, end = 12.dp)
                         .fillMaxWidth(),
-                ){
+                ) {
                     Text(
                         "Принять"
                     )
                 }
                 OutlinedButton(
-                    onClick = {},
+                    onClick = onDeclineClick,
                     shape = RoundedCornerShape(6.dp),
                     modifier = Modifier.weight(1f).padding(start = 12.dp, end = 40.dp)
                         .fillMaxWidth(),
                     border = BorderStroke(2.dp, Blue)
-                ){
+                ) {
                     Text(
                         "Отклонить",
                         color = Blue
@@ -166,5 +184,23 @@ fun MeetingResponseScreen(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MeetingResponseScreenPreview() {
+    val mockUsers = listOf(
+        UserEntity("Иван Иванов", "Android Developer", "email", ""),
+        UserEntity("Петр Петров", "Backend Developer", "email", "")
+    )
+
+    AndroidBootcamp2026FrontendTheme {
+        MeetingResponseContent(
+            users = mockUsers,
+            onAcceptClick = {},
+            onDeclineClick = {},
+            onCloseClick = {}
+        )
     }
 }

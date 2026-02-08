@@ -45,15 +45,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.zIndex
 import ru.sicampus.bootcamp2026.data.source.JobDepNetworkDataSource
-import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 
 @Composable
 fun RegistrationScreen(
-    onRegistrationClick: () -> Unit,
+    onBackClick: () -> Unit,
     onIntent: (AuthIntent) -> Unit,
-
-    ){
+) {
     var fullName by remember { mutableStateOf("") }
     var jobTitle by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -126,10 +124,11 @@ fun RegistrationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Spacer(modifier = Modifier.height(34.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+
                 Text("Регистрация", style = MaterialTheme.typography.titleLarge)
 
-                Spacer(modifier = Modifier.height(39.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 OutlinedTextField(
                     modifier = Modifier
@@ -147,14 +146,13 @@ fun RegistrationScreen(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
-
+                Spacer(modifier = Modifier.height(10.dp))
 
                 var expandedJob by remember { mutableStateOf(false) }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .zIndex(1f)
+                        .zIndex(2f)
                 ) {
                     OutlinedButton(
                         onClick = { expandedJob = !expandedJob },
@@ -165,7 +163,7 @@ fun RegistrationScreen(
                     ) {
                         Text(
                             if (jobTitle.isNotEmpty()) jobTitle else "Должность",
-                        fontSize = 14.sp
+                            fontSize = 14.sp
                         )
                         Icon(
                             Icons.Default.KeyboardArrowDown,
@@ -191,10 +189,9 @@ fun RegistrationScreen(
                     }
                 }
 
+                Spacer(modifier = Modifier.height(10.dp))
+
                 var expandedDept by remember { mutableStateOf(false) }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -235,9 +232,7 @@ fun RegistrationScreen(
                     }
                 }
 
-
-                Spacer(modifier = Modifier.height(20.dp))
-
+                Spacer(modifier = Modifier.height(10.dp))
 
                 OutlinedTextField(
                     modifier = Modifier
@@ -255,7 +250,7 @@ fun RegistrationScreen(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 OutlinedTextField(
                     modifier = Modifier
@@ -273,7 +268,7 @@ fun RegistrationScreen(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 OutlinedTextField(
                     modifier = Modifier
@@ -301,8 +296,18 @@ fun RegistrationScreen(
                     Text("Зарегистрироваться")
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
+                Text("Уже есть аккаунт?")
+                TextButton(onClick = { onBackClick() }) {
+                    Text(
+                        "Войти",
+                        color = DeepBlue,
+                        textDecoration = TextDecoration.Underline
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
             }
         }
     }
@@ -310,14 +315,11 @@ fun RegistrationScreen(
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun RegistrationScreenPreviewTablet(
-) {
+fun RegistrationScreenPreviewTablet() {
     AndroidBootcamp2026FrontendTheme {
         RegistrationScreen(
-            onRegistrationClick = {},
+            onBackClick = {},
             onIntent = { _ -> },
         )
     }
 }
-
-

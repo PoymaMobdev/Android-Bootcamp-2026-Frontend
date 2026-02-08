@@ -3,7 +3,6 @@ package ru.sicampus.bootcamp2026.ui.theme.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,7 +32,8 @@ val CardBlue = Color(0xFF6A82FB)
 @Composable
 fun MeetingListItem(
     meetingName: String,
-    dateAndTime: String
+    dateAndTime: String,
+    onInfoClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -58,9 +58,8 @@ fun MeetingListItem(
             )
         }
 
-        // Кнопка с иконкой "i"
         IconButton(
-            onClick = {},
+            onClick = onInfoClick
         ) {
             Icon(
                 imageVector = Icons.Outlined.Info,
@@ -76,7 +75,8 @@ fun MeetingListItem(
 fun MeetingList(
     meetingNames: List<String>,
     datesAndTimes: List<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClick: (Int) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -97,7 +97,8 @@ fun MeetingList(
             ) {
                 MeetingListItem(
                     meetingName = meetingName,
-                    dateAndTime = time
+                    dateAndTime = time,
+                    onInfoClick = { onItemClick(index) }
                 )
             }
         }
@@ -107,10 +108,10 @@ fun MeetingList(
 @Preview(showBackground = true)
 @Composable
 fun PreviewMeetingList() {
-    val meetingNames: List<String> = listOf("Планерка", "Планерка", "Планерка", "Планерка", "Планерка")
-    val datesAndTimes: List<String> = listOf("08.02.2026 09:00", "08.02.2026 10:00", "08.02.2026 11:00", "08.02.2026 15:00", "08.02.2026 16:00")
+    val meetingNames: List<String> = listOf("Планерка", "Планерка")
+    val datesAndTimes: List<String> = listOf("08.02.2026 09:00", "08.02.2026 10:00")
 
     AndroidBootcamp2026FrontendTheme {
-        MeetingList(meetingNames, datesAndTimes)
+        MeetingList(meetingNames, datesAndTimes, onItemClick = {})
     }
 }
