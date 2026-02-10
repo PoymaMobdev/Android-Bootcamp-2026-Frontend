@@ -76,7 +76,7 @@ fun MeetingList(
     meetingNames: List<String>,
     datesAndTimes: List<String>,
     modifier: Modifier = Modifier,
-    onItemClick: (Int) -> Unit
+    onItemClick: (String) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -98,7 +98,7 @@ fun MeetingList(
                 MeetingListItem(
                     meetingName = meetingName,
                     dateAndTime = time,
-                    onInfoClick = { onItemClick(index) }
+                    onInfoClick = { onItemClick(meetingName) }
                 )
             }
         }
@@ -108,7 +108,7 @@ fun MeetingList(
 @Preview(showBackground = true)
 @Composable
 fun PreviewMeetingList() {
-    val meetingNames: List<String> = listOf("Планерка", "Планерка")
+    val meetingNames: List<String> = listOf("Планерка", "Ревью кода")
     val datesAndTimes: List<String> = listOf("08.02.2026 09:00", "08.02.2026 10:00")
 
     AndroidBootcamp2026FrontendTheme {

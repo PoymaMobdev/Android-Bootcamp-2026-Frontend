@@ -1,38 +1,31 @@
 package ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.R
+import ru.sicampus.bootcamp2026.ViewModelState
+import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.domain.entities.UserEntity
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Blue
@@ -40,32 +33,59 @@ import ru.sicampus.bootcamp2026.ui.theme.Surface
 import ru.sicampus.bootcamp2026.ui.theme.Typography
 import ru.sicampus.bootcamp2026.ui.theme.components.userList.UserList
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MeetingResponseScreen(
-    users: List<UserEntity>,
-    appViewModel: AppViewModel
+    appViewModel: AppViewModel,
+    userPreferences: UserPreferences
 ) {
     val viewModel: MeetingInfoViewModel = viewModel(
         factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
                 return MeetingInfoViewModel(appViewModel) as T
             }
         }
     )
 
+    val uiState by viewModel.uiState.collectAsState()
+
+    var currentUsers: List<UserEntity> = emptyList()
+    var currentTitle = appViewModel.selectedMeetingName
+    var currentDate = appViewModel.selectedMeetingDate
+    var currentDescription = viewModel.meetingDescription.ifEmpty { "Загрузка описания..." }
+
+    if (uiState is MeetingInfoState.Content) {
+        val content = uiState as MeetingInfoState.Content
+        currentUsers = content.users
+        currentTitle = content.title
+        currentDate = content.date
+        currentDescription = viewModel.meetingDescription
+    }
+
     MeetingResponseContent(
-        users = users,
-        onAcceptClick = { /* viewModel.accept() */ },
-        onDeclineClick = { /* viewModel.decline() */ },
-        onCloseClick = { /* appViewModel.back() */ }
+        title = currentTitle,
+        date = currentDate,
+        users = currentUsers,
+        description = currentDescription,
+        onAcceptClick = {
+            viewModel.acceptInvitation(userPreferences)
+        },
+        onDeclineClick = {
+            viewModel.declineInvitation(userPreferences)
+        },
+        onCloseClick = { appViewModel.NavigateTo(ViewModelState.Invitations) }
     )
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun MeetingResponseContent(
+    title: String,
+    date: String,
     users: List<UserEntity>,
+    description: String,
     onAcceptClick: () -> Unit,
     onDeclineClick: () -> Unit,
     onCloseClick: () -> Unit
@@ -92,35 +112,27 @@ private fun MeetingResponseContent(
                             modifier = Modifier.paddingFromBaseline(top = 150.dp, bottom = 5.dp)
                         )
                         Text(
-                            text = "Название встречи",
+                            text = title,
                             style = Typography.bodyLarge
                         )
+
                         Text(
                             text = "Описание",
                             style = Typography.labelSmall,
                             modifier = Modifier.paddingFromBaseline(top = 30.dp, bottom = 5.dp)
                         )
                         Text(
-                            text = "Очень длинное описание предстоящей встречи, которое придумал " +
-                                    "сотрудник, чтобы все поняли, для чего она нужна",
+                            text = description,
                             style = Typography.bodyLarge
                         )
+
                         Text(
                             text = "Дата и время",
                             style = Typography.labelSmall,
                             modifier = Modifier.paddingFromBaseline(top = 30.dp, bottom = 5.dp)
                         )
                         Text(
-                            text = "08.02.2026   18:00-19:00",
-                            style = Typography.bodyLarge
-                        )
-                        Text(
-                            text = "Место",
-                            style = Typography.labelSmall,
-                            modifier = Modifier.paddingFromBaseline(top = 30.dp, bottom = 5.dp)
-                        )
-                        Text(
-                            text = "Место встречи",
+                            text = date,
                             style = Typography.bodyLarge
                         )
                         Text(
@@ -166,9 +178,7 @@ private fun MeetingResponseContent(
                     modifier = Modifier.weight(1f).padding(start = 40.dp, end = 12.dp)
                         .fillMaxWidth(),
                 ) {
-                    Text(
-                        "Принять"
-                    )
+                    Text("Принять")
                 }
                 OutlinedButton(
                     onClick = onDeclineClick,
@@ -177,30 +187,9 @@ private fun MeetingResponseContent(
                         .fillMaxWidth(),
                     border = BorderStroke(2.dp, Blue)
                 ) {
-                    Text(
-                        "Отклонить",
-                        color = Blue
-                    )
+                    Text("Отклонить", color = Blue)
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MeetingResponseScreenPreview() {
-    val mockUsers = listOf(
-        UserEntity("Иван Иванов", "Android Developer", "email", ""),
-        UserEntity("Петр Петров", "Backend Developer", "email", "")
-    )
-
-    AndroidBootcamp2026FrontendTheme {
-        MeetingResponseContent(
-            users = mockUsers,
-            onAcceptClick = {},
-            onDeclineClick = {},
-            onCloseClick = {}
-        )
     }
 }

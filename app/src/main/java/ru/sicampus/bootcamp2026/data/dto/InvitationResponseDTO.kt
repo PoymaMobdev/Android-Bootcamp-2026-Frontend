@@ -14,3 +14,8 @@ data class InvitationResponseDTO(
     @SerialName("organizerName")
     val organizerName: String
 )
+
+@Serializable
+data class InvitationResponseBody(
+    val status: String
+)

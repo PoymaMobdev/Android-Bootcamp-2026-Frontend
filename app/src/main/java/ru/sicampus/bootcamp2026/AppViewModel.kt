@@ -14,6 +14,10 @@ class AppViewModel(
 ): ViewModel() {
     private val _appState: MutableStateFlow<ViewModelState> = MutableStateFlow(ViewModelState.Loading)
     var selectedInvitationId: String = ""
+    var selectedMeetingName: String = ""
+    var selectedMeetingDate: String = ""
+    var selectedMeetingId: String = ""
+
     var appState = _appState.asStateFlow()
 
     init{
@@ -22,6 +26,20 @@ class AppViewModel(
 
     fun NavigateTo(state: ViewModelState){
         _appState.value = state
+    }
+
+    fun openMeetingInfo(id: String, name: String, date: String) {
+        selectedMeetingId = id
+        selectedMeetingName = name
+        selectedMeetingDate = date
+        NavigateTo(ViewModelState.MeetingInfo)
+    }
+
+    fun openMeetingResponse(id: String, name: String, date: String) {
+        selectedMeetingId = id
+        selectedMeetingName = name
+        selectedMeetingDate = date
+        NavigateTo(ViewModelState.MeetingResponse)
     }
 
     private fun checkAuth() {

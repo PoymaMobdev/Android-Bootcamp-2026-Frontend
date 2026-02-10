@@ -6,5 +6,9 @@ import ru.sicampus.bootcamp2026.domain.entities.UserEntity
 sealed interface MeetingInfoState {
     data class Error(val reason: String) : MeetingInfoState
     data object Loading : MeetingInfoState
-    data class Content(val users: List<UserEntity>): MeetingInfoState
+    data class Content(
+        val users: List<UserEntity>,
+        val title: String,
+        val date: String
+    ) : MeetingInfoState
 }

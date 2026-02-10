@@ -70,6 +70,8 @@ class MainActivity : ComponentActivity() {
                     is ViewModelState.TimeTable -> TimetableScreen(viewModel, userPreferences)
                     is ViewModelState.Profile -> ProfileScreen(viewModel, userPreferences)
                     is ViewModelState.CreateMeeting -> CreateMeetingScreen(viewModel, userPreferences)
+                    is ViewModelState.MeetingInfo -> MeetingInfoScreen(viewModel)
+                    is ViewModelState.MeetingResponse -> MeetingResponseScreen(viewModel, userPreferences)
                     else -> LoginScreen(viewModel, userPreferences)
                 }
             }

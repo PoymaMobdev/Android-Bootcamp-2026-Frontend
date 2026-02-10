@@ -1,13 +1,10 @@
 package ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo
 
 import android.annotation.SuppressLint
-import ru.sicampus.bootcamp2026.ui.theme.components.userList.UserList
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.fillMaxSize
-import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
@@ -24,28 +21,29 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.R
 import ru.sicampus.bootcamp2026.domain.entities.UserEntity
+import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Surface
 import ru.sicampus.bootcamp2026.ui.theme.Typography
-
+import ru.sicampus.bootcamp2026.ui.theme.components.userList.UserList
 
 @Composable
 fun MeetingInfoScreen(
     appViewModel: AppViewModel,
 ) {
-
     val viewModel: MeetingInfoViewModel = viewModel(
         factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -54,10 +52,16 @@ fun MeetingInfoScreen(
         }
     )
     val state by viewModel.uiState.collectAsState()
+
     when(val currentState = state){
         is MeetingInfoState.Error -> MeetingInfoError(currentState, onRefresh = {viewModel.getData()})
         is MeetingInfoState.Loading -> MeetingInfoLoading()
-        is MeetingInfoState.Content -> MeetingInfoContent(users = currentState.users)
+        is MeetingInfoState.Content -> MeetingInfoContent(
+            users = currentState.users,
+            meetingTitle = currentState.title,
+            meetingDate = currentState.date,
+            onClose = { viewModel.closeInfo() }
+        )
     }
 }
 
@@ -73,9 +77,7 @@ private fun MeetingInfoError(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(state.reason)
-            Button(
-                onClick = onRefresh
-            ) {
+            Button(onClick = onRefresh) {
                 Text("refresh")
             }
         }
@@ -83,21 +85,21 @@ private fun MeetingInfoError(
 }
 
 @Composable
-private fun MeetingInfoLoading(
-){
+private fun MeetingInfoLoading(){
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center) {
-        CircularProgressIndicator(
-            modifier = Modifier.size(48.dp)
-        )
+        CircularProgressIndicator(modifier = Modifier.size(48.dp))
     }
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun MeetingInfoContent(
-    users: List<UserEntity>
+    users: List<UserEntity>,
+    meetingTitle: String,
+    meetingDate: String,
+    onClose: () -> Unit
 ){
     Scaffold{
         Box(
@@ -118,7 +120,7 @@ private fun MeetingInfoContent(
                         modifier = Modifier.paddingFromBaseline(top = 150.dp, bottom = 5.dp)
                     )
                     Text(
-                        text = "Название встречи",
+                        text = meetingTitle,
                         style = Typography.bodyLarge
                     )
                     Text(
@@ -127,7 +129,7 @@ private fun MeetingInfoContent(
                         modifier = Modifier.paddingFromBaseline(top = 30.dp, bottom = 5.dp)
                     )
                     Text(
-                        text = "08.02.2026   18:00-19:00",
+                        text = meetingDate,
                         style = Typography.bodyLarge
                     )
                     Text(
@@ -155,7 +157,7 @@ private fun MeetingInfoContent(
                 modifier = Modifier.fillMaxWidth()
             )
             IconButton(
-                onClick = { },
+                onClick = onClose,
                 modifier = Modifier.align(Alignment.TopEnd).padding(7.dp)
             ) {
                 Icon(
@@ -172,27 +174,16 @@ private fun MeetingInfoContent(
 @Composable
 fun MeetingInfoPreview() {
     val mockUsers = listOf(
-        UserEntity(
-            fullName = "Иван Иванов",
-            jobTitle = "Android Developer",
-            email = "ivan@example.com",
-            avatarUrl = ""
-        ),
-        UserEntity(
-            fullName = "Мария Петрова",
-            jobTitle = "Product Manager",
-            email = "maria@example.com",
-            avatarUrl = ""
-        ),
-        UserEntity(
-            fullName = "Сергей Сидоров",
-            jobTitle = "Backend Developer",
-            email = "sergey@example.com",
-            avatarUrl = ""
-        )
+        UserEntity(fullName = "Иван Иванов", jobTitle = "Android Developer", email = "ivan@example.com", avatarUrl = ""),
+        UserEntity(fullName = "Мария Петрова", jobTitle = "Product Manager", email = "maria@example.com", avatarUrl = "")
     )
 
     AndroidBootcamp2026FrontendTheme {
-        MeetingInfoContent(users = mockUsers)
+        MeetingInfoContent(
+            users = mockUsers,
+            meetingTitle = "Дейли митинг",
+            meetingDate = "08.02.2026 18:00",
+            onClose = {}
+        )
     }
 }

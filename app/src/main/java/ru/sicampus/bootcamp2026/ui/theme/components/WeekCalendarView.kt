@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,8 +42,11 @@ import ru.sicampus.bootcamp2026.data.source.ScheduleNetworkDataSource
 import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 import ru.sicampus.bootcamp2026.ui.theme.Surface
+import ru.sicampus.bootcamp2026.ui.theme.components.MeetingList
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -52,20 +56,59 @@ fun WeekView(
 ) {
     val today = LocalDate.now()
     val weeks = remember { getWeeksFromToday(today, 52) }
-    var meetingNames by remember { mutableStateOf<List<String>>(emptyList()) }
-    var times by remember { mutableStateOf<List<String>>(emptyList()) }
+
+    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
+
+    var scheduleItems by remember { mutableStateOf<List<ScheduleNetworkDataSource.ScheduleItem>>(emptyList()) }
 
     LaunchedEffect(Unit) {
         val data = ScheduleNetworkDataSource()
-        meetingNames = data.findMeetingsTitles(userPreferences)
-        times = data.findMeetingsDT(userPreferences)
+        scheduleItems = data.getSchedule(userPreferences)
+    }
+
+    val filteredItems = scheduleItems.filter { item ->
+        try {
+            val itemDateTime = LocalDateTime.parse(item.dateTime)
+            itemDateTime.toLocalDate() == selectedDate
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    val displayNames = filteredItems.map { it.topic }
+    val displayTimes = filteredItems.map { item ->
+        try {
+            val startTime = LocalDateTime.parse(item.dateTime)
+            val endTime = startTime.plusHours(1)
+            val formatter = DateTimeFormatter.ofPattern("HH:mm")
+            "${startTime.format(formatter)} - ${endTime.format(formatter)}"
+        } catch (e: Exception) {
+            item.dateTime
+        }
     }
 
     WeekViewContent(
         weeks = weeks,
-        meetingNames = meetingNames,
-        times = times,
-        onAddMeetingClick = { appViewModel.NavigateTo(ViewModelState.CreateMeeting) }
+        selectedDate = selectedDate,
+        meetingNames = displayNames,
+        times = displayTimes,
+        onAddMeetingClick = { appViewModel.NavigateTo(ViewModelState.CreateMeeting) },
+        onDateSelected = { newDate -> selectedDate = newDate },
+        onMeetingClick = { name ->
+            val item = scheduleItems.find { it.topic == name }
+
+            if (item != null) {
+                val realId = item.id.toString()
+                val dateStr = try {
+                    val startTime = LocalDateTime.parse(item.dateTime)
+                    val endTime = startTime.plusHours(1)
+                    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+                    "${startTime.format(formatter)} - ${endTime.format(formatter)}"
+                } catch (e: Exception) { item.dateTime }
+
+                appViewModel.openMeetingInfo(realId, item.topic, dateStr)
+            }
+        }
     )
 }
 
@@ -73,9 +116,12 @@ fun WeekView(
 @Composable
 fun WeekViewContent(
     weeks: List<List<LocalDate>>,
+    selectedDate: LocalDate,
     meetingNames: List<String>,
     times: List<String>,
-    onAddMeetingClick: () -> Unit
+    onAddMeetingClick: () -> Unit,
+    onDateSelected: (LocalDate) -> Unit,
+    onMeetingClick: (String) -> Unit
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -117,19 +163,23 @@ fun WeekViewContent(
                     .padding(horizontal = 8.dp)
             ) {
                 weekDates.forEach { date ->
+                    val isSelected = date == selectedDate
+
                     Box(
                         modifier = Modifier
                             .weight(1f)
                             .height(48.dp)
                             .clip(CircleShape)
+                            .background(if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent)
                             .clickable {
-                                // TODO: Handle date selection
+                                onDateSelected(date)
                             },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = date.dayOfMonth.toString(),
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -162,15 +212,24 @@ fun WeekViewContent(
             }
         }
 
-        MeetingList(meetingNames, times)
-    }
-}
-
-@Composable
-fun MeetingList(names: List<String>, times: List<String>) {
-    Column(modifier = Modifier.padding(16.dp)) {
-        names.zip(times).forEach { (name, time) ->
-            Text(text = "$name at $time")
+        if (meetingNames.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(30.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "На этот день встреч нет",
+                    color = Color.Gray
+                )
+            }
+        } else {
+            MeetingList(
+                meetingNames = meetingNames,
+                datesAndTimes = times,
+                onItemClick = onMeetingClick
+            )
         }
     }
 }
@@ -191,20 +250,25 @@ fun getWeeksFromToday(today: LocalDate, weeksCount: Int): List<List<LocalDate>> 
 }
 
 @SuppressLint("NewApi")
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Расписание (Неделя)")
 @Composable
 fun WeekViewPreview() {
     val today = LocalDate.now()
     val mockWeeks = getWeeksFromToday(today, 1)
-    val mockNames = listOf("Daily Standup", "Client Meeting")
-    val mockTimes = listOf("10:00", "14:30")
+    val selectedDate = today
+
+    val mockNames = listOf("Daily Standup")
+    val mockTimes = listOf("10:00 - 11:00")
 
     AndroidBootcamp2026FrontendTheme {
         WeekViewContent(
             weeks = mockWeeks,
+            selectedDate = selectedDate,
             meetingNames = mockNames,
             times = mockTimes,
-            onAddMeetingClick = {}
+            onAddMeetingClick = {},
+            onDateSelected = {},
+            onMeetingClick = {}
         )
     }
 }

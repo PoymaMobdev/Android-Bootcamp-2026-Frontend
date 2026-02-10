@@ -112,4 +112,75 @@ class ScheduleNetworkDataSource {
         }
     }
 
+    @SuppressLint("NewApi")
+    suspend fun findMeetingsIds(
+        usersPreferences: UserPreferences
+    ): List<String> = withContext(Dispatchers.IO) {
+        val token = AuthLocalDataSource.token ?: return@withContext emptyList()
+        val userId = loadAndReturnUserID(usersPreferences.getUserEmail())
+        val startDate = LocalDate.now()
+        val endDate = startDate.plusDays(7)
+
+        val result = Network.client.get("${Network.HOST}/api/schedule") {
+            header(HttpHeaders.Authorization, "Basic $token")
+            header("X-User-Id", userId.toString())
+            parameter("startDate", startDate.toString())
+            parameter("endDate", endDate.toString())
+        }
+
+        return@withContext if (result.status == HttpStatusCode.OK) {
+            try {
+                @Serializable
+                data class MeetingIdResponse(val id: Long)
+
+                val jsonParser = Json { ignoreUnknownKeys = true }
+                val meetings = jsonParser.decodeFromString<List<MeetingIdResponse>>(result.bodyAsText())
+
+                meetings.map { it.id.toString() }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+    }
+
+    @SuppressLint("NewApi")
+    suspend fun getSchedule(
+        usersPreferences: UserPreferences
+    ): List<ScheduleItem> = withContext(Dispatchers.IO) {
+        val token = AuthLocalDataSource.token ?: return@withContext emptyList()
+        val userId = loadAndReturnUserID(usersPreferences.getUserEmail())
+        val startDate = LocalDate.now()
+        val endDate = startDate.plusDays(7)
+
+        val result = Network.client.get("${Network.HOST}/api/schedule") {
+            header(HttpHeaders.Authorization, "Basic $token")
+            header("X-User-Id", userId.toString())
+            parameter("startDate", startDate.toString())
+            parameter("endDate", endDate.toString())
+        }
+
+        return@withContext if (result.status == HttpStatusCode.OK) {
+            try {
+                val jsonParser = Json { ignoreUnknownKeys = true }
+                jsonParser.decodeFromString<List<ScheduleItem>>(result.bodyAsText())
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+    }
+
+    @Serializable
+    data class ScheduleItem(
+        val id: Long = 0,
+        val topic: String,
+        val dateTime: String
+    )
+
+
 }

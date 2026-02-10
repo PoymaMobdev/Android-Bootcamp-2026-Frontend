@@ -8,4 +8,6 @@ sealed interface ViewModelState {
     data object TimeTable: ViewModelState
     data object Profile: ViewModelState
     data object CreateMeeting:ViewModelState
+    data object MeetingInfo: ViewModelState
+    data object MeetingResponse: ViewModelState
 }

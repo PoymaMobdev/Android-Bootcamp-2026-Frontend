@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter
 data class MeetinCreateDTO(
     @SerialName("topic")
     val topic: String,
+    @SerialName("description")
+    val description: String,
     @SerialName("dateTime")
     val dateTime: String,
     @SerialName("participantIds")

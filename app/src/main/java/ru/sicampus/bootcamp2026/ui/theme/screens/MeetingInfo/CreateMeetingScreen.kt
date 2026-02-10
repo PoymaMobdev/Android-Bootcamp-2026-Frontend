@@ -2,8 +2,10 @@ package ru.sicampus.bootcamp2026.ui.theme.screens.MeetingInfo
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.os.Build
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -51,7 +53,8 @@ val HeaderBlue = Blue
 val BgLightBlue = Color(0xFFF5F5F5)
 val BorderGray = Color(0xFFE0E0E0)
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@RequiresApi(Build.VERSION_CODES.O)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnrememberedMutableState")
 @Composable
 fun CreateMeetingScreen(
     appViewModel: AppViewModel,
@@ -66,6 +69,7 @@ fun CreateMeetingScreen(
     )
 
     var name by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
     var date by remember { mutableStateOf("") }
     var time by remember { mutableStateOf("Выберите время") }
     var searchQuery by remember { mutableStateOf("") }
@@ -112,6 +116,8 @@ fun CreateMeetingScreen(
     CreateMeetingContent(
         name = name,
         onNameChange = { name = it },
+        onDescriptionChange = {description = it},
+        description = description,
         date = date,
         onDateClick = { datePickerDialog.show() },
         time = time,
@@ -136,7 +142,8 @@ fun CreateMeetingScreen(
                     val success = dataSource.createMeeting(
                         meeting = MeetinCreateDTO(
                             name,
-                            dateTime = viewModel.convertToISO(date, time).toString(),
+                            description,
+                            viewModel.convertToISO(date, time).toString(),
                             selected,
                         ),
                         usersPreferences = userPreferences
@@ -155,7 +162,9 @@ fun CreateMeetingScreen(
 @Composable
 fun CreateMeetingContent(
     name: String,
+    description: String,
     onNameChange: (String) -> Unit,
+    onDescriptionChange: (String) -> Unit,
     date: String,
     onDateClick: () -> Unit,
     time: String,
@@ -248,6 +257,13 @@ fun CreateMeetingContent(
                             value = name,
                             onValueChange = onNameChange,
                             placeholder = "Название встречи"
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        CustomTextField(
+                            value = description,
+                            onValueChange = onDescriptionChange,
+                            placeholder = "Описание встречи"
                         )
                         Spacer(modifier = Modifier.height(16.dp))
 
@@ -464,7 +480,9 @@ fun PreviewCreateScreen() {
     AndroidBootcamp2026FrontendTheme {
         CreateMeetingContent(
             name = "Встреча",
+            description = "Пам-пам",
             onNameChange = {},
+            onDescriptionChange = {},
             date = "2026-02-12",
             onDateClick = {},
             time = "12:00",

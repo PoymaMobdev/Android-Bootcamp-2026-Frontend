@@ -3,13 +3,19 @@ package ru.sicampus.bootcamp2026.data.source
 import android.annotation.SuppressLint
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import ru.sicampus.bootcamp2026.data.dto.InvitationResponseBody
 import ru.sicampus.bootcamp2026.data.dto.InvitationResponseDTO
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -56,6 +62,31 @@ class InvitationNetworkDataSource {
             }
         } else {
             emptyList()
+        }
+    }
+    suspend fun sendResponse(
+        invitationId: String,
+        status: String,
+        userPreferences: UserPreferences
+    ): Boolean = withContext(Dispatchers.IO) {
+        val token = AuthLocalDataSource.token ?: return@withContext false
+
+        val userInfoDataSource = UsersInfoDataSource()
+        val userId = userInfoDataSource.getUserByEmail(userPreferences.getUserEmail())
+            .getOrNull()?.id ?: return@withContext false
+
+        try {
+            val response = Network.client.post("${Network.HOST}/api/invitations/$invitationId/respond") {
+                header(HttpHeaders.Authorization, "Basic $token")
+                header("X-User-Id", userId)
+                contentType(ContentType.Application.Json)
+                setBody(InvitationResponseBody(status = status))
+            }
+
+            return@withContext response.status == HttpStatusCode.OK
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return@withContext false
         }
     }
 

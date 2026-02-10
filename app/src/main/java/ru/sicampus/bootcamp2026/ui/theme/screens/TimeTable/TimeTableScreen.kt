@@ -36,6 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.AppViewModel
 import ru.sicampus.bootcamp2026.data.source.UserPreferences
 import ru.sicampus.bootcamp2026.ui.theme.components.BottomNavBar
+import ru.sicampus.bootcamp2026.ui.theme.components.MonthView
 import ru.sicampus.bootcamp2026.ui.theme.components.WeekView
 
 @SuppressLint("NewApi")
@@ -128,7 +129,7 @@ fun TimeTableContent(
         content = {
             when (selectedIndex) {
                 0 -> WeekView(appViewModel = appViewModel, userPreferences = userPreferences)
-                //1 -> MonthView()
+                1 -> MonthView(appViewModel = appViewModel, userPreferences = userPreferences)
             }
         }
     )
